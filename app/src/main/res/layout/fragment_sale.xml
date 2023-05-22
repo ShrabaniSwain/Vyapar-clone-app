@@ -63,11 +63,18 @@
         android:hint="@string/customer"
         android:padding="@dimen/dp_15" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerviewCustomer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@id/etCustomer"/>
+
     <View
         android:id="@+id/vLine2"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_below="@id/etCustomer"
+        android:layout_below="@id/recyclerviewCustomer"
         android:layout_marginTop="@dimen/dp_5"
         android:background="#C4C4C4" />
 

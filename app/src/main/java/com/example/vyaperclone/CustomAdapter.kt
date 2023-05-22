@@ -26,7 +26,10 @@ class CustomAdapter(private var transactions: List<TransactionEntity>,private va
         holder.mReceivedAmnt.visibility = View.GONE
         holder.mTotal.visibility = View.GONE
 
-        holder.itemView.setOnClickListener { onItemClick(transactions[position].partyName.toString()) }
+        holder.itemView.setOnClickListener {
+            onItemClick(transactions[position].partyName.toString())
+            holder.itemView.visibility = View.GONE
+        }
     }
 
     override fun getItemCount(): Int {

@@ -36,6 +36,7 @@
                 android:src="@drawable/ic_baseline_edit_24" />
 
             <ImageButton
+                android:id="@+id/filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp_20"

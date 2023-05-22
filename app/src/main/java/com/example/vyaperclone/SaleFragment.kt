@@ -24,7 +24,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vyaperclone.databinding.FragmentPurchaseBinding
 import com.example.vyaperclone.databinding.FragmentSaleBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +38,9 @@ import kotlinx.coroutines.launch
 class SaleFragment : Fragment() {
 
     private lateinit var binding: FragmentSaleBinding
+
+    var transactions = mutableListOf<TransactionEntity>()
+    val adapter = CustomAdapter(transactions) { text -> binding.etCustomer.setText(text) }
 
     private val sharedViewModel: SaleSharedViewModel by activityViewModels()
 
@@ -50,6 +55,12 @@ class SaleFragment : Fragment() {
             totalPrice += (data[i].price * data[i].quantity)
         }
         binding.etTotalAmount.setText(totalPrice.toString())
+
+        sharedViewModel.getReport().observe(this, Observer {
+            transactions.clear()
+            transactions.addAll(it)
+            adapter.notifyDataSetChanged()
+        })
 
     }
 
@@ -112,7 +123,8 @@ class SaleFragment : Fragment() {
 
             }
         })
-
+        binding.recyclerviewCustomer.layoutManager = LinearLayoutManager(context)
+        binding.recyclerviewCustomer.adapter = adapter
 
     }
 
@@ -179,6 +191,45 @@ class SaleFragment : Fragment() {
             startActivity(Intent.createChooser(myIntent, "Share Using"))
         }
 
+        binding.etCustomer.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                // Scroll RecyclerView to desired position
+                binding.recyclerviewCustomer.visibility = View.VISIBLE
+            }
+            false
+        }
+
+        binding.etCustomer.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                //after the change calling the method and passing the search input
+                filter(editable.toString())
+            }
+        })
+
+
+    }
+
+    private fun filter(text: String) {
+        //new array list that will hold the filtered data
+        val filteredTransactions = ArrayList<TransactionEntity>()
+
+        //looping through existing elements
+        for (transaction in transactions) {
+            //if the existing elements contains the search input
+            if (transaction.partyName?.toLowerCase()?.contains(text.toLowerCase())!!) {
+                //adding the element to filtered list
+                filteredTransactions.add(transaction)
+            }
+        }
+
+        //calling a method of the adapter class and passing the filtered list
+        adapter.filterList(filteredTransactions)
     }
 
     private fun isDataValid(): Boolean {

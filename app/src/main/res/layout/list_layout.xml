@@ -12,9 +12,10 @@
 
         <TextView
             android:id="@+id/textViewName"
-            android:padding="15dp"
+            android:padding="10dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
             android:layout_width="match_parent"
+            android:textSize="14dp"
             android:layout_height="wrap_content" />
 
     </androidx.cardview.widget.CardView>

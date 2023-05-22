@@ -6,6 +6,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.lazy.LazyColumn
@@ -64,8 +65,12 @@ class PurchaseFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        binding.etParty.setOnClickListener{
-            binding.recyclerviewName.visibility = View.VISIBLE
+        binding.etParty.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                // Scroll RecyclerView to desired position
+                binding.recyclerviewName.visibility = View.VISIBLE
+            }
+            false
         }
 
         binding.btnSave.setOnClickListener {

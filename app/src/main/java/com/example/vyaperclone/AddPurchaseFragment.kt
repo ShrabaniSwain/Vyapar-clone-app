@@ -1,10 +1,19 @@
 package com.example.vyaperclone
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.vyaperclone.databinding.FragmentAddPurchaseBinding
+import com.example.vyaperclone.databinding.FragmentPurchaseBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +30,10 @@ class AddPurchaseFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var binding: FragmentAddPurchaseBinding
+    var itemsEntity = mutableListOf<ItemsEntity>()
+    val adapter = ProductServiceAdapter(itemsEntity) { text -> binding.etProductNamePurchaseFragment.setText(text) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -29,12 +42,15 @@ class AddPurchaseFragment : Fragment() {
         }
     }
 
+    private val viewModel: ProductViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentAddPurchaseBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_purchase, container, false)
+        return binding.root
     }
 
     companion object {
@@ -55,5 +71,62 @@ class AddPurchaseFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        binding.etProductNamePurchaseFragment.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                // Scroll RecyclerView to desired position
+            binding.rvAddPurchase.visibility = View.VISIBLE
+            }
+            false
+        }
+
+        binding.etProductNamePurchaseFragment.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                //after the change calling the method and passing the search input
+                filter(editable.toString())
+            }
+        })
+    }
+
+    private fun filter(text: String) {
+        //new array list that will hold the filtered data
+        val filteredTransactions = ArrayList<ItemsEntity>()
+
+        //looping through existing elements
+        for (itemProduct in itemsEntity) {
+            //if the existing elements contains the search input
+            if (itemProduct.name?.toLowerCase()?.contains(text.toLowerCase())!!) {
+                //adding the element to filtered list
+                filteredTransactions.add(itemProduct)
+            }
+        }
+
+        //calling a method of the adapter class and passing the filtered list
+        adapter.filterList(filteredTransactions)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getItems().observe(this, Observer {
+            itemsEntity.clear()
+            itemsEntity.addAll(it)
+            adapter.notifyDataSetChanged()
+        })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        binding.rvAddPurchase.layoutManager = LinearLayoutManager(context)
+        binding.rvAddPurchase.adapter = adapter
     }
 }

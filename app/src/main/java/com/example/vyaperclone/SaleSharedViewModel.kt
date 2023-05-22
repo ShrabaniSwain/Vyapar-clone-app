@@ -3,6 +3,7 @@ package com.example.vyaperclone
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +24,10 @@ class SaleSharedViewModel @Inject constructor(
         }
         Log.d("salesshared", transactionEntity.billedItemNames!!)
         Log.d("salesshared", transactionEntity.billedItemQuantity!!)
+    }
+
+    fun getReport(): LiveData<List<TransactionEntity>> {
+        return repository.getAllTransactions()
     }
 
 
