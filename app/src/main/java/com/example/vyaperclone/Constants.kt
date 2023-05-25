@@ -10,5 +10,10 @@ class Constants {
         const val PURCHASEINT = 9
         const val PRODUCT = "product"
         const val SERVICE = "service"
+        var PartyName = ""
+        var BillNo = 0
+        var TotalAmt = 0
+        var PaidAmt = 0
+        var Received = 0
     }
 }

@@ -203,7 +203,24 @@ class ItemsFragment : Fragment() {
                                     if (viewModel.searchQuery.value.isEmpty()) {
                                         TransactionCard(
                                             transactionEntity = transaction,
-                                            onClick = { /*TODO*/ })
+                                            onClick = { /*TODO*/
+                                                // Handle card click
+                                                if (transaction.type == "purchase") {
+                                                    val action = UpdatePurchaseDataDirections.actionUpdatePurchaseData()
+                                                    findNavController().navigate(action)
+                                                    Constants.PartyName = transaction.partyName.toString()
+                                                    Constants.BillNo = transaction.billNo!!.toInt()
+                                                    Constants.TotalAmt = transaction.total!!.toInt()
+                                                    Constants.PaidAmt = transaction.paidAmt!!.toInt()
+                                                }
+                                                else{
+                                                    val action = UpdateSaleFragmentDirections.actionUpdateSaleFragment()
+                                                    findNavController().navigate(action)
+                                                    Constants.PartyName = transaction.partyName.toString()
+                                                    Constants.BillNo = transaction.billNo!!.toInt()
+                                                    Constants.TotalAmt = transaction.total!!.toInt()
+                                                    Constants.Received = transaction.received!!.toInt()
+                                                }})
                                     } else if (transaction.partyName!!.contains(viewModel.searchQuery.value)) {
                                         TransactionCard(
                                             transactionEntity = transaction,

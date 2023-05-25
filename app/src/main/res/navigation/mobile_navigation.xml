@@ -25,6 +25,12 @@
         <action
             android:id="@+id/action_nav_items_to_addNewPartyFragment"
             app:destination="@id/addNewPartyFragment" />
+        <action
+            android:id="@+id/action_updatePurchaseData"
+            app:destination="@id/updatePurchaseData" />
+        <action
+            android:id="@+id/action_updateSaleFragment"
+            app:destination="@id/updateSaleFragment" />
     </fragment>
 
     <fragment
@@ -196,6 +202,27 @@
         <action
             android:id="@+id/action_productFragment_to_addProductFragment"
             app:destination="@id/addProductFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/updatePurchaseData"
+        android:name="com.example.vyaperclone.UpdatePurchaseData"
+        android:label="@string/big"
+        tools:layout="@layout/fragment_update_purchase_data">
+        <action
+            android:id="@+id/action_updatePurchaseData"
+            app:destination="@id/nav_items" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/updateSaleFragment"
+        android:name="com.example.vyaperclone.UpdateSaleFragment"
+        android:label="@string/big"
+        tools:layout="@layout/fragment_update_sale">
+        <action
+            android:id="@+id/action_updateSaleFragment"
+            app:destination="@id/nav_items" />
     </fragment>
 
 </navigation>

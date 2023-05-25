@@ -43,4 +43,7 @@ interface VyaparDAO {
 
     @Update
     suspend fun updateParty(partyEntity: PartyEntity)
+
+    @Update
+    suspend fun updateTransaction(transactionEntity: TransactionEntity)
 }
