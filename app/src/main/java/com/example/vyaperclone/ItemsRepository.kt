@@ -1,6 +1,8 @@
 package com.example.vyaperclone
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ItemsRepository(private val databaseDao: VyaparDAO) {
 
@@ -107,5 +109,10 @@ class ItemsRepository(private val databaseDao: VyaparDAO) {
         return list;
     }
 
+    suspend fun updateTransaction(transactionEntity: TransactionEntity) {
+        withContext(Dispatchers.IO) {
+            databaseDao.updateTransaction(transactionEntity.billNo,transactionEntity.partyName,transactionEntity.total,transactionEntity.paidAmt,transactionEntity.received)
+        }
+    }
 
 }

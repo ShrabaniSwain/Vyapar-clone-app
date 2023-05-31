@@ -256,13 +256,13 @@
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/btnDelete"
+            android:id="@+id/btnSave"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_50"
             android:layout_weight="1.5"
             android:background="@color/save_and_btn"
             android:textAllCaps="false"
-            android:text="Delete" />
+            android:text="Save" />
 
         <Button
             android:id="@+id/btnEdit"

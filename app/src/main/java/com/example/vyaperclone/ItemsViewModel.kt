@@ -2,6 +2,8 @@ package com.example.vyaperclone
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,6 +49,7 @@ class ItemsViewModel @Inject constructor(
     var totalToGive: MutableState<Long> = mutableStateOf(0)
     var totalExpenses: MutableState<Long> = mutableStateOf(0)
     var searchQuery: MutableState<String> = mutableStateOf("")
+    val updatedTransaction = MutableLiveData<TransactionEntity?>()
 
     fun getAllItems() {
         repository.getAllItems().observeForever() {
@@ -86,9 +89,11 @@ class ItemsViewModel @Inject constructor(
 
     }
 
-    fun addTransaction(transactionEntity: TransactionEntity) {
-        viewModelScope.launch() {
-            repository.addTransaction(transactionEntity)
+    fun updateTransaction(transactionEntity: TransactionEntity) {
+
+
+        viewModelScope.launch {
+            repository.updateTransaction(transactionEntity)
         }
     }
 

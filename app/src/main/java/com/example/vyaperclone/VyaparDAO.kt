@@ -44,6 +44,12 @@ interface VyaparDAO {
     @Update
     suspend fun updateParty(partyEntity: PartyEntity)
 
-    @Update
-    suspend fun updateTransaction(transactionEntity: TransactionEntity)
+    @Query("UPDATE transactionsTable SET partyName = :partyName, total = :total, paidAmt = :paidAmt, received = :received WHERE billNo = :billNo")
+    suspend fun updateTransaction(
+        billNo: Int?,
+        partyName: String?,
+        total: Long?,
+        paidAmt: Long?,
+        received: Long?
+    )
 }
