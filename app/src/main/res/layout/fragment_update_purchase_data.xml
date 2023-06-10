@@ -60,7 +60,7 @@
         android:id="@+id/recyclerviewName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_below="@id/etParty"/>
 
     <View
@@ -256,13 +256,13 @@
         android:layout_alignParentBottom="true">
 
         <Button
-            android:id="@+id/btnSave"
+            android:id="@+id/btnDelete"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_50"
             android:layout_weight="1.5"
             android:background="@color/save_and_btn"
             android:textAllCaps="false"
-            android:text="Save" />
+            android:text="Delete" />
 
         <Button
             android:id="@+id/btnEdit"
@@ -274,15 +274,26 @@
             android:textAllCaps="false"
             android:textColor="@color/white" />
 
-        <ImageButton
-
-            android:id="@+id/btnSharePurchaseFrag"
+        <Button
+            android:id="@+id/btnSave"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_50"
-            android:layout_gravity="center"
-            android:layout_weight="0.5"
-            android:background="@color/save_and_btn"
-            android:src="@drawable/ic_share2" />
+            android:layout_weight="1.5"
+            android:background="@color/save_btn"
+            android:text="Save"
+            android:visibility="gone"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+<!--        <ImageButton-->
+
+<!--            android:id="@+id/btnSharePurchaseFrag"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="@dimen/dp_50"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_weight="0.5"-->
+<!--            android:background="@color/save_and_btn"-->
+<!--            android:src="@drawable/ic_delete" />-->
 
     </LinearLayout>
 

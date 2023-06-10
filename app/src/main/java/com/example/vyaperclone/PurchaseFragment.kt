@@ -1,10 +1,12 @@
 package com.example.vyaperclone
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -21,6 +23,7 @@ import com.example.vyaperclone.databinding.FragmentPurchaseBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 @AndroidEntryPoint
 class PurchaseFragment : Fragment() {
@@ -43,13 +46,12 @@ class PurchaseFragment : Fragment() {
     ): View? {
 
         binding = FragmentPurchaseBinding.inflate(inflater, container, false)
-
-        view?.findViewById<ComposeView>(R.id.ItemRecyclerCompose)?.setContent {
+        binding.addItemRecyclerCompose.setContent {
             LazyColumn() {
                 itemsIndexed(
                     items = sharedViewModel.listOfPurchase.value
                 ) { index, purchase ->
-                    BilledItem(purchase.productName, index, purchase.quantity, purchase.price)
+                    BilledItem(addItems = purchase)
                 }
             }
         }
@@ -83,6 +85,7 @@ class PurchaseFragment : Fragment() {
                             Constants.PURCHASE,
                             binding.etParty.text.toString(),
                             convertListToBilledItems(),
+                            convertListToBilledRate(),
                             convertListToBilledQuantity(),
                             binding.etPaid.text.toString().toLong(),
                             0,
@@ -188,13 +191,27 @@ class PurchaseFragment : Fragment() {
         var purchase = ""
         for (i in data.indices) {
             if (i == 0) {
-                purchase += "${data[i].productName}"
+                purchase += "${data[i].itemsName}"
             } else {
-                purchase += ",${data[i].productName}"
+                purchase += ",${data[i].itemsName}"
             }
 
         }
         return purchase
+    }
+
+    private fun convertListToBilledRate(): String? {
+        val data = sharedViewModel.listOfPurchase.value
+        var rate = ""
+        for (i in data.indices) {
+            if (i == 0) {
+                rate += "${data[i].rate}"
+            } else {
+                rate += ",${data[i].rate}"
+            }
+
+        }
+        return rate
     }
 
     override fun onResume() {

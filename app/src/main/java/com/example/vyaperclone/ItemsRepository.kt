@@ -1,8 +1,7 @@
 package com.example.vyaperclone
 
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import javax.xml.transform.dom.DOMLocator
 
 class ItemsRepository(private val databaseDao: VyaparDAO) {
 
@@ -38,9 +37,10 @@ class ItemsRepository(private val databaseDao: VyaparDAO) {
 
         databaseDao.insertTransaction(transactionEntity)
         val itemList = convertBilledItemNamesToList(transactionEntity.billedItemNames)
+        val itemrate = convertBilledItemRateToList(transactionEntity.billedItemRate)
         val itemQuantity = convertBilledItemQuantityToList(transactionEntity.billedItemQuantity)
 
-        updateItems(itemList, itemQuantity, transactionEntity.type)
+        updateItems(itemList,itemrate, itemQuantity, transactionEntity.type)
         transactionEntity.partyName?.let {
             updateParty(
                 it,
@@ -74,6 +74,7 @@ class ItemsRepository(private val databaseDao: VyaparDAO) {
 
     private suspend fun updateItems(
         itemList: List<String>,
+        itemrate: ArrayList<Double>,
         itemQuantity: java.util.ArrayList<Int>,
         type: String?
     ) {
@@ -108,11 +109,23 @@ class ItemsRepository(private val databaseDao: VyaparDAO) {
         }
         return list;
     }
+    private fun convertBilledItemRateToList(billedItemRate: String?): ArrayList<Double> {
+        val data = billedItemRate!!.split(",")
+        val list: ArrayList<Double> = ArrayList()
+        for (item in data) {
+            if (item.isNotBlank()) {
+                list.add(item.toDouble())
+            }
+        }
+        return list;
+    }
 
     suspend fun updateTransaction(transactionEntity: TransactionEntity) {
-        withContext(Dispatchers.IO) {
             databaseDao.updateTransaction(transactionEntity.billNo,transactionEntity.partyName,transactionEntity.total,transactionEntity.paidAmt,transactionEntity.received)
-        }
+    }
+
+    suspend fun deleteTransactionByBillNo(billNo: Int) {
+            databaseDao.deleteTransactionByBillNo(billNo)
     }
 
 }

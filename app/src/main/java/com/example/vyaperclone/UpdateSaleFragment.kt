@@ -6,8 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.vyaperclone.databinding.FragmentUpdatePurchaseDataBinding
 import com.example.vyaperclone.databinding.FragmentUpdateSaleBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,6 +23,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [UpdateSaleFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class UpdateSaleFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -33,6 +38,7 @@ class UpdateSaleFragment : Fragment() {
         }
     }
 
+    private val viewModel: ItemsViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,19 +72,61 @@ class UpdateSaleFragment : Fragment() {
 
         val editablePartyName = Editable.Factory.getInstance().newEditable(Constants.PartyName)
         binding.etCustomer.text=editablePartyName
+        binding.etCustomer.isEnabled = false
 
         val editableTotalAmount = Editable.Factory.getInstance().newEditable(Constants.TotalAmt.toString())
         binding.etTotalAmount.text=editableTotalAmount
+        binding.etTotalAmount.isEnabled = false
 
         val editablePaidAmt = Editable.Factory.getInstance().newEditable(Constants.Received.toString())
         binding.etPaidAmount.text=editablePaidAmt
+        binding.etPaidAmount.isEnabled = false
 
         val editableBillNo = Editable.Factory.getInstance().newEditable(Constants.BillNo.toString())
         binding.etInvNo.text=editableBillNo
+        binding.etInvNo.isEnabled = false
 
         val balanceDueAmt = Constants.TotalAmt - Constants.Received
         val editableBalanceAmt = Editable.Factory.getInstance().newEditable(balanceDueAmt.toString())
         binding.etBalanceDue.text= editableBalanceAmt
+        binding.etBalanceDue.isEnabled = false
+
+        binding.btnEdit.setOnClickListener {
+            binding.etCustomer.isEnabled = true
+            binding.etTotalAmount.isEnabled = true
+            binding.etPaidAmount.isEnabled = true
+            binding.etBalanceDue.isEnabled = true
+
+            binding.btnEdit.visibility = View.GONE
+            binding.btnSave.visibility = View.VISIBLE
+        }
+
+        binding.btnSave.setOnClickListener {
+            val updatedPartyName = binding.etCustomer.text.toString()
+            val updatedTotalAmount = binding.etTotalAmount.text.toString().toInt()
+            val updatedPaidAmt = binding.etPaidAmount.text.toString().toInt()
+            val updatedBillNo = binding.etInvNo.text.toString().toInt()
+
+            val updatedTransaction = TransactionEntity(
+                billNo = updatedBillNo,
+                Constants.SALE,
+                partyName = updatedPartyName,
+                billedItemNames = null,
+                billedItemRate = null,
+                billedItemQuantity = null,
+                paidAmt = updatedPaidAmt.toLong(),0,
+                total = updatedTotalAmount.toLong()
+            )
+
+            viewModel.updateTransaction(updatedTransaction)
+            findNavController().popBackStack()
+        }
+
+        binding.btnDelete.setOnClickListener {
+            val billNoToDelete = binding.etInvNo.text.toString().toInt()
+            viewModel.deleteTransactionByBillNo(billNoToDelete)
+            findNavController().popBackStack()
+        }
 
     }
 }

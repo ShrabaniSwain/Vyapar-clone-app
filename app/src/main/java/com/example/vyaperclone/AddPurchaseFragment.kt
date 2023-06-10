@@ -9,11 +9,13 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vyaperclone.databinding.FragmentAddPurchaseBinding
 import com.example.vyaperclone.databinding.FragmentPurchaseBinding
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,6 +45,7 @@ class AddPurchaseFragment : Fragment() {
     }
 
     private val viewModel: ProductViewModel by activityViewModels()
+    private val sharedViewModel: PurchaseSharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -128,5 +131,15 @@ class AddPurchaseFragment : Fragment() {
 
         binding.rvAddPurchase.layoutManager = LinearLayoutManager(context)
         binding.rvAddPurchase.adapter = adapter
+
+        binding.btnSave.setOnClickListener{
+            val name = binding.etProductNamePurchaseFragment.text.toString()
+            val quantity = binding.etQuantityProductFrag.text.toString().toInt()
+            val rate = binding.etRateProductFrag.text.toString().toDouble()
+            val tax = binding.etTaxExcluded.text.toString().toDouble()
+            val unit = binding.etUnit.text.toString()
+            sharedViewModel.addPurchase(id,name, quantity, unit, rate,tax)
+            findNavController().popBackStack()
+        }
     }
 }

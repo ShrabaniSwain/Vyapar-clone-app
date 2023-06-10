@@ -75,7 +75,7 @@
         android:id="@+id/btnAddItems"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_35"
-        android:layout_below="@id/vLine2"
+        android:layout_below="@id/addItemRecyclerCompose"
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_10"
@@ -243,10 +243,10 @@
     </LinearLayout>
 
     <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/ItemRecyclerCompose"
+        android:id="@+id/addItemRecyclerCompose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonlayout" />
+        android:layout_below="@+id/vLine2" />
 
     <LinearLayout
         android:id="@+id/buttonlayout"

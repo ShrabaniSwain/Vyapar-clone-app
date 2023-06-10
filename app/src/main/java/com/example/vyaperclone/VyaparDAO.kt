@@ -52,4 +52,13 @@ interface VyaparDAO {
         paidAmt: Long?,
         received: Long?
     )
+    @Query("DELETE FROM transactionsTable WHERE billNo = :billNo")
+    suspend fun deleteTransactionByBillNo(billNo: Int)
+
+    @Insert
+    suspend fun insertAddItems(addItems: AddItems)
+
+    @Query("SELECT * FROM addItemsTable")
+    fun getAllAddItems():LiveData<List<AddItems>>
+
 }

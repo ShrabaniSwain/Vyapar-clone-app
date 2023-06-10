@@ -16,5 +16,8 @@ class Constants {
         var TotalAmt = 0
         var PaidAmt = 0
         var Received = 0
+        var itemsName = ""
+        var quantity= "0"
+        var rate= "0"
     }
 }
