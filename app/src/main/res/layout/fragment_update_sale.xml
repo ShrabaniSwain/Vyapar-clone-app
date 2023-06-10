@@ -259,32 +259,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-
         <Button
-            android:id="@+id/btnSaveAndNew2"
+            android:id="@+id/btnDelete"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_50"
             android:layout_weight="1.5"
             android:background="@color/save_and_btn"
-            android:text="@string/save_amp_new" />
+            android:textAllCaps="false"
+            android:text="Delete" />
 
         <Button
-            android:id="@+id/btnSave2"
+            android:id="@+id/btnEdit"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_50"
             android:layout_weight="1.5"
             android:background="@color/save_btn"
-            android:text="@string/save"
+            android:text="Edit"
+            android:textAllCaps="false"
             android:textColor="@color/white" />
 
-        <ImageButton
-            android:id="@+id/ibShare2SalesFragment"
+        <Button
+            android:id="@+id/btnSave"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_50"
-            android:layout_gravity="center"
-            android:layout_weight="0.5"
-            android:background="@color/save_and_btn"
-            android:src="@drawable/ic_share2" />
+            android:layout_weight="1.5"
+            android:background="@color/save_btn"
+            android:text="Save"
+            android:visibility="gone"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/ibShare2SalesFragment"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="@dimen/dp_50"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_weight="0.5"-->
+<!--            android:background="@color/save_and_btn"-->
+<!--            android:src="@drawable/ic_share2" />-->
 
     </LinearLayout>
 </RelativeLayout>

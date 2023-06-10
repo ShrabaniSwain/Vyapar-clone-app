@@ -87,7 +87,7 @@ class SaleFragment : Fragment() {
                     itemsIndexed(
                         items = sharedViewModel.listOfSale.value
                     ) { index, sale ->
-                        BilledItem(sale.productName, index, sale.quantity, sale.price)
+//                        BilledItem(sale.productName, index, sale.quantity, sale.price)
                     }
                 }
             }
@@ -148,6 +148,7 @@ class SaleFragment : Fragment() {
                             Constants.SALE,
                             binding.etCustomer.text.toString(),
                             convertListToBilledItems(),
+                            billedItemRate = null,
                             convertListToBilledQuantity(),
                             0,
                             binding.etPaidAmount.text.toString().toLong(),
@@ -290,7 +291,7 @@ class SaleFragment : Fragment() {
 }
 
 @Composable
-fun BilledItem(name: String, index: Int, quantity: Int, price: Long) {
+fun BilledItem(addItems: AddItems) {
     Card(
         modifier = Modifier
             .height(70.dp)
@@ -311,7 +312,7 @@ fun BilledItem(name: String, index: Int, quantity: Int, price: Long) {
             ) {
 
                 Text(
-                    text = "${index + 1}. $name",
+                    text = addItems.itemsName,
                     color = Color(0xFF2A424A),
                     fontWeight = FontWeight.Medium,
                     fontFamily = robotoFamily,
@@ -319,7 +320,7 @@ fun BilledItem(name: String, index: Int, quantity: Int, price: Long) {
                 )
 
                 Text(
-                    text = "${quantity * price}",
+                    text = "${addItems.quantity * addItems.rate}",
                     color = Color(0xFF236885),
                     fontWeight = FontWeight.Medium,
                     fontFamily = robotoFamily,
@@ -342,7 +343,7 @@ fun BilledItem(name: String, index: Int, quantity: Int, price: Long) {
                 )
 
                 Text(
-                    text = "$quantity X $price = ${quantity * price}",
+                    text = "${addItems.quantity} X ${addItems.rate} = ${addItems.quantity * addItems.rate}",
                     color = Color.LightGray,
                     fontWeight = FontWeight.Normal,
                     fontFamily = robotoFamily,
@@ -359,6 +360,14 @@ fun BilledItem(name: String, index: Int, quantity: Int, price: Long) {
 @Composable
 fun salePreview() {
     Column {
-        BilledItem("cola", 1, 10, 50)
+        BilledItem(addItems =
+        AddItems(
+            1,
+            "coco",
+            12,
+            "bag",
+            100.0,
+            0.0,
+        ))
     }
 }

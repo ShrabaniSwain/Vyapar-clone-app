@@ -1,8 +1,6 @@
 package com.example.vyaperclone
 
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.*
 import android.widget.ImageButton
@@ -26,13 +24,10 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.vyaperclone.databinding.FragmentItemsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.log
 
 @AndroidEntryPoint
 class ItemsFragment : Fragment() {
@@ -73,22 +68,8 @@ class ItemsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
-        sharedViewModel.updatedTransaction.observe(viewLifecycleOwner) { updatedTransaction ->
-            // Update the corresponding TransactionCard with the updatedTransaction data
-            val updatedIndex = viewModel.transcations.value?.indexOfFirst { transaction ->
-                transaction.billNo==updatedTransaction?.billNo
-            }
-
-            if (updatedTransaction != null && updatedIndex != null && updatedIndex != -1) {
-                viewModel.transcations.value?.let { currentTransactions ->
-                    val updatedItems = currentTransactions.toMutableList()
-                    updatedItems.set(updatedIndex, updatedTransaction)
-                    viewModel.transcations.value = updatedItems
-                }
-            }
-        }
         return ComposeView(requireContext()).apply {
 
             setContent {
@@ -233,6 +214,10 @@ class ItemsFragment : Fragment() {
                                                     Constants.BillNo = transaction.billNo!!.toInt()
                                                     Constants.TotalAmt = transaction.total!!.toInt()
                                                     Constants.PaidAmt = transaction.paidAmt!!.toInt()
+
+                                                    Constants.itemsName = transaction.billedItemNames.toString()
+                                                    Constants.quantity = transaction.billedItemQuantity.toString()
+                                                    Constants.rate = transaction.billedItemRate.toString()
                                                 }
                                                 else{
                                                     val action = UpdateSaleFragmentDirections.actionUpdateSaleFragment()

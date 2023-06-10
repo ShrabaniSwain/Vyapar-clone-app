@@ -16,7 +16,7 @@ class PurchaseSharedViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    var listOfPurchase: MutableState<ArrayList<PurchaseDto>> = mutableStateOf(arrayListOf())
+    var listOfPurchase: MutableState<ArrayList<AddItems>> = mutableStateOf(arrayListOf())
 
     fun addTransaction(transactionEntity: TransactionEntity) {
         viewModelScope.launch {
@@ -24,9 +24,15 @@ class PurchaseSharedViewModel @Inject constructor(
         }
         Log.d("salesshared", transactionEntity.billedItemNames!!)
         Log.d("salesshared", transactionEntity.billedItemQuantity!!)
+        Log.d("salesshared", transactionEntity.billedItemRate!!)
     }
     fun getReport(): LiveData<List<TransactionEntity>> {
         return repository.getAllTransactions()
+    }
+
+    fun addPurchase(id: Int, name: String, quantity: Int, unit: String, rate: Double, tax: Double) {
+        val purchase = AddItems(id,name, quantity, unit,rate,tax)
+        listOfPurchase.value.add(purchase)
     }
 
 }

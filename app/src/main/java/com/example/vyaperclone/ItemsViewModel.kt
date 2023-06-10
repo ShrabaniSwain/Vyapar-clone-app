@@ -50,6 +50,9 @@ class ItemsViewModel @Inject constructor(
     var totalExpenses: MutableState<Long> = mutableStateOf(0)
     var searchQuery: MutableState<String> = mutableStateOf("")
     val updatedTransaction = MutableLiveData<TransactionEntity?>()
+    val deletedTransactionBillNo = MutableLiveData<Int?>()
+    private val _purchaseList = MutableLiveData<List<AddItems>>()
+    val purchaseList: LiveData<List<AddItems>> = _purchaseList
 
     fun getAllItems() {
         repository.getAllItems().observeForever() {
@@ -96,6 +99,13 @@ class ItemsViewModel @Inject constructor(
             repository.updateTransaction(transactionEntity)
         }
     }
+
+    fun deleteTransactionByBillNo(billNo: Int) {
+        viewModelScope.launch {
+            repository.deleteTransactionByBillNo(billNo)
+        }
+    }
+
 
     fun addItem(itemsEntity: ItemsEntity) {
         viewModelScope.launch {
