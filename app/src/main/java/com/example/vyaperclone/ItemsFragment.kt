@@ -1,6 +1,9 @@
 package com.example.vyaperclone
 
+<<<<<<< HEAD
 import android.app.Dialog
+=======
+>>>>>>> 52c58d9be6d2a9260d7b29b555cb0f9164f3ff8f
 import android.os.Bundle
 import android.util.Log
 import android.view.*

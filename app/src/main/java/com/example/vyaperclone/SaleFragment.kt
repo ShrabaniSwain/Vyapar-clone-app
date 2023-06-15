@@ -86,7 +86,11 @@ class SaleFragment : Fragment() {
                     itemsIndexed(
                         items = sharedViewModel.listOfSale.value
                     ) { index, sale ->
+<<<<<<< HEAD
                         BilledItem(addItems = sale)
+=======
+//                        BilledItem(sale.productName, index, sale.quantity, sale.price)
+>>>>>>> 52c58d9be6d2a9260d7b29b555cb0f9164f3ff8f
                     }
                 }
             }
@@ -147,7 +151,11 @@ class SaleFragment : Fragment() {
                             Constants.SALE,
                             binding.etCustomer.text.toString(),
                             convertListToBilledItems(),
+<<<<<<< HEAD
                             convertListToBilledRate(),
+=======
+                            billedItemRate = null,
+>>>>>>> 52c58d9be6d2a9260d7b29b555cb0f9164f3ff8f
                             convertListToBilledQuantity(),
                             0,
                             binding.etPaidAmount.text.toString().toLong(),

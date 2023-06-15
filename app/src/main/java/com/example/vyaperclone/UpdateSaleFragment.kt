@@ -10,7 +10,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+<<<<<<< HEAD
 import androidx.recyclerview.widget.LinearLayoutManager
+=======
+>>>>>>> 52c58d9be6d2a9260d7b29b555cb0f9164f3ff8f
 import com.example.vyaperclone.databinding.FragmentUpdatePurchaseDataBinding
 import com.example.vyaperclone.databinding.FragmentUpdateSaleBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -135,6 +138,7 @@ class UpdateSaleFragment : Fragment() {
             viewModel.deleteTransactionByBillNo(billNoToDelete)
             findNavController().popBackStack()
         }
+<<<<<<< HEAD
 
         val itemNames = Constants.itemsName.split(",").map { it.trim() }
         val quantities = Constants.quantity.split(",").map { it.trim() }
@@ -148,6 +152,8 @@ class UpdateSaleFragment : Fragment() {
         }
         binding.recyclerviewCustomer.layoutManager = LinearLayoutManager(context)
         binding.recyclerviewCustomer.adapter = adapter
+=======
+>>>>>>> 52c58d9be6d2a9260d7b29b555cb0f9164f3ff8f
 
     }
 }

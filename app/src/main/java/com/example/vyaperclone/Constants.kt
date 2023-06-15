@@ -19,8 +19,11 @@ class Constants {
         var itemsName = ""
         var quantity= "0"
         var rate= "0"
+<<<<<<< HEAD
         var existPartyName: List<PartyEntity> = emptyList()
         var receiveAmount= 0
         var PayAmount= 0
+=======
+>>>>>>> 52c58d9be6d2a9260d7b29b555cb0f9164f3ff8f
     }
 }
