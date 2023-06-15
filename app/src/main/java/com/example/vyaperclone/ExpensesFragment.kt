@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.vyaperclone.databinding.FragmentAddNewPartyBinding
 import com.example.vyaperclone.databinding.FragmentExpensesBinding
 import com.example.vyaperclone.databinding.ItemCategoryLayoutBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -25,8 +26,8 @@ class ExpensesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_expenses, container, false)
-
+        binding = FragmentExpensesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

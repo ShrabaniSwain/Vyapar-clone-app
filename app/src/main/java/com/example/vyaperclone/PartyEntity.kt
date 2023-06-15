@@ -10,6 +10,7 @@ data class PartyEntity(
     @ColumnInfo(name = "partyContactNumber") var partyContactNumber: String?,
     @ColumnInfo(name = "partyBillingAddress") var partyBillingAddress: String?,
     @ColumnInfo(name = "amount") var amout: Long?,
+    @ColumnInfo(name = "partyType") var partyType: String?,
 
     ) {
     @ColumnInfo(name = "id")

@@ -1,9 +1,11 @@
 package com.example.vyaperclone
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -26,12 +28,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.vyaperclone.databinding.FragmentItemsBinding
+import com.example.vyaperclone.databinding.FragmentPurchaseBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ItemsFragment : Fragment() {
     lateinit var binding: FragmentItemsBinding
+    private var topSheetView: View? = null
+
 
     private fun addItem(item: Int) {
         if (item == 2) {
@@ -91,7 +96,7 @@ class ItemsFragment : Fragment() {
                             Spacer(modifier = Modifier.size(10.dp))
                             TotalInformationCard(
                                 name = context.getString(R.string.youll_get),
-                                viewModel.totalToGet.value,
+                                viewModel.totalToGet.value+viewModel.totalToGetItem.value,
                                 R.drawable.ic_arrow_downward,
                                 Constants.YOUWILLGETINT,
                                 { })
@@ -107,7 +112,7 @@ class ItemsFragment : Fragment() {
 
                             TotalInformationCard(
                                 name = context.getString(R.string.youll_give),
-                                viewModel.totalToGive.value,
+                                viewModel.totalToGive.value+viewModel.totalToGiveItem.value,
                                 R.drawable.ic_upward,
                                 Constants.YOUWILLGIVEINT,
                                 { })
@@ -121,13 +126,13 @@ class ItemsFragment : Fragment() {
                                 { })
                             Spacer(modifier = Modifier.size(10.dp))
 
-                            TotalInformationCard(
-                                name = context.getString(R.string.expense_compose),
-                                viewModel.totalExpenses.value,
-                                R.drawable.ic_wallet,
-                                Constants.PURCHASEINT,
-                                { })
-                            Spacer(modifier = Modifier.size(10.dp))
+//                            TotalInformationCard(
+//                                name = context.getString(R.string.expense_compose),
+//                                viewModel.totalExpenses.value,
+//                                R.drawable.ic_wallet,
+//                                Constants.PURCHASEINT,
+//                                { })
+//                            Spacer(modifier = Modifier.size(10.dp))
 
 
                         }
@@ -168,15 +173,15 @@ class ItemsFragment : Fragment() {
                                     unfocusedIndicatorColor = Color.Transparent,
                                     textColor = Color.Black,
                                 ),
-                                placeholder = {
-                                    Text(text = context.getString(R.string.search_trans))
-                                },
-                                leadingIcon = {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.ic_search_blue),
-                                        contentDescription = null
-                                    )
-                                }
+//                                placeholder = {
+//                                    Text(text = context.getString(R.string.search_trans))
+//                                },
+//                                leadingIcon = {
+//                                    Image(
+//                                        painter = painterResource(id = R.drawable.ic_search_blue),
+//                                        contentDescription = null
+//                                    )
+//                                }
                             )
                         }
                         Divider(color = Color.LightGray, thickness = 1.dp, startIndent = 10.dp)
@@ -194,6 +199,14 @@ class ItemsFragment : Fragment() {
                                     items = viewModel.parties.value
                                 ) { index, party ->
                                     PartiesCard(partyEntity = party, onClick = { /*TODO*/ })
+                                }
+                            }
+                            Constants.existPartyName =  viewModel.parties.value
+                            LazyColumn() {
+                                itemsIndexed(
+                                    items = viewModel.transcations.value
+                                ) { index, transaction ->
+                                    TransactionPartiesCard(transactionEntity = transaction, onClick = { /*TODO*/ })
                                 }
                             }
                         } else if (viewModel.selectedType.value == 1) {
@@ -226,6 +239,10 @@ class ItemsFragment : Fragment() {
                                                     Constants.BillNo = transaction.billNo!!.toInt()
                                                     Constants.TotalAmt = transaction.total!!.toInt()
                                                     Constants.Received = transaction.received!!.toInt()
+
+                                                    Constants.itemsName = transaction.billedItemNames.toString()
+                                                    Constants.quantity = transaction.billedItemQuantity.toString()
+                                                    Constants.rate = transaction.billedItemRate.toString()
                                                 }})
                                     } else if (transaction.partyName!!.contains(viewModel.searchQuery.value)) {
                                         TransactionCard(
@@ -272,13 +289,59 @@ class ItemsFragment : Fragment() {
         bottomSheetDialog?.setCanceledOnTouchOutside(true)
         bottomSheetDialog?.show()
 
-        val ibExpense = bottomSheetDialog?.findViewById<ImageButton>(R.id.ibExpenses)
-        ibExpense?.setOnClickListener {
-
-
+        val closeButton = bottomSheetDialog?.findViewById<ImageButton>(R.id.closeButton)
+        closeButton?.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+        val tvLendMoney = bottomSheetDialog?.findViewById<TextView>(R.id.tvLendMoney)
+        tvLendMoney?.setOnClickListener{
+           showCustomDialog()
+        }
+        val tvRecoveryMoney = bottomSheetDialog?.findViewById<TextView>(R.id.tvRecoverMoney)
+        tvRecoveryMoney?.setOnClickListener{
+            showRecoveryMoneyDialog()
         }
 
     }
+
+    private fun showRecoveryMoneyDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.top_sheet_recovery_money, activity?.findViewById(R.id.topsheetContainer))
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(dialogView)
+
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window?.attributes)
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+        layoutParams.gravity = Gravity.TOP
+
+        // Set desired margin from the top (in pixels)
+        val marginTopInPixels = resources.getDimensionPixelSize(R.dimen.dp_50)
+        layoutParams.y = marginTopInPixels
+
+        dialog.window?.attributes = layoutParams
+        dialog.show()
+    }
+
+    private fun showCustomDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.top_sheet, activity?.findViewById(R.id.topsheetContainer))
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(dialogView)
+
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window?.attributes)
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+        layoutParams.gravity = Gravity.TOP
+
+        // Set desired margin from the top (in pixels)
+        val marginTopInPixels = resources.getDimensionPixelSize(R.dimen.dp_50)
+        layoutParams.y = marginTopInPixels
+
+        dialog.window?.attributes = layoutParams
+        dialog.show()
+    }
+
 
     private fun navigateToSaleFragment() {
         val action = ItemsFragmentDirections.actionNavItemsToNavSale()
@@ -407,7 +470,7 @@ fun BottomButtons(
 
     ) {
         SalePurchaseButton(Color(0xFF0174E7), stringResource(R.string.pur_comp), onClickPurchase)
-//        CircleAddButton(onClick = onClickMiddle)
+        CircleAddButton(onClick = onClickMiddle)
         SalePurchaseButton(Color(0xFFED1A3B), stringResource(R.string.add_sale_compose), onClickSale)
     }
 }

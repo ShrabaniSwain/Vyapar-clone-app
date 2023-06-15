@@ -47,11 +47,13 @@ class AddSaleFragment : Fragment() {
             if (isDataValid()) {
                 sharedViewModel.listOfSale.value.add(
 
-                    SaleDTO(
-
+                    AddItems(
+                        id,
                         binding.etProductName.text.toString(),
                         binding.etQuantity.text.toString().toInt(),
-                        binding.etRate.text.toString().toLong()
+                        binding.etUnit.text.toString(),
+                        binding.etRate.text.toString().toDouble(),
+                        binding.etTaxExcluded.text.toString().toDouble()
                     )
                 )
                 activity?.onBackPressed()
@@ -62,18 +64,18 @@ class AddSaleFragment : Fragment() {
             val action = AddSaleFragmentDirections.actionAddSaleFragmentToNavSale()
             findNavController().navigate(action)
         }
-        _binding.ivSettings.setOnClickListener {
-            val action = AddSaleFragmentDirections.actionAddSaleFragmentToNavSettings()
-            findNavController().navigate(action)
-        }
+//        _binding.ivSettings.setOnClickListener {
+//            val action = AddSaleFragmentDirections.actionAddSaleFragmentToNavSettings()
+//            findNavController().navigate(action)
+//        }
 
-        _binding.cvSaveAndNew.setOnClickListener {
-            Toast.makeText(
-                activity,
-                "Item / services name cannot be left empty",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+//        _binding.cvSaveAndNew.setOnClickListener {
+//            Toast.makeText(
+//                activity,
+//                "Item / services name cannot be left empty",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
 
         binding.rvAddSale.layoutManager = LinearLayoutManager(context)
         binding.rvAddSale.adapter = adapter
@@ -143,6 +145,14 @@ class AddSaleFragment : Fragment() {
         }
         if (_binding.etRate.text.toString().isEmpty()) {
             _binding.etRate.error = "Required"
+            isValid = false
+        }
+        if (_binding.etUnit.text.toString().isEmpty()) {
+            _binding.etUnit.error = "Required"
+            isValid = false
+        }
+        if (_binding.etTaxExcluded.text.toString().isEmpty()) {
+            _binding.etTaxExcluded.error = "Required"
             isValid = false
         }
 

@@ -1,5 +1,6 @@
 package com.example.vyaperclone
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,7 +13,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -323,15 +323,69 @@ fun PartiesCard(partyEntity: PartyEntity, onClick: (PartyEntity) -> Unit) {
                         fontSize = 17.sp,
                         fontFamily = robotoFamily,
                         fontWeight = FontWeight.Medium,
-                        color = if (partyEntity.amout!! > 0) Color(0xFF26B180) else Color(0xFFE36B4E)
+                        color = if (partyEntity.partyType == "Receive") Color(0xFF26B180) else Color(0xFFE36B4E)
                     )
                     Spacer(modifier = Modifier.size(5.dp))
                     Text(
-                        text = if (partyEntity.amout!! > 0) "You'll Get" else "You'll Give",
+                        text = if (partyEntity.partyType == "Receive") "You'll Get" else "You'll Give",
                         fontSize = 13.sp,
                         fontFamily = robotoFamily,
                         fontWeight = FontWeight.Normal,
-                        color = if (partyEntity.amout!! > 0) Color(0xFF26B180) else Color(0xFFE36B4E)
+                        color = if (partyEntity.partyType == "Receive") Color(0xFF26B180) else Color(0xFFE36B4E)
+                    )
+                }
+
+            }
+        }
+        Divider(color = Color.LightGray, thickness = 1.dp)
+    }
+
+}
+
+@Composable
+fun TransactionPartiesCard(transactionEntity: TransactionEntity, onClick: (TransactionEntity) -> Unit) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Card(
+            modifier = Modifier
+                .height(65.dp)
+                .fillMaxWidth()
+                .clickable { onClick(transactionEntity) },
+        ) {
+
+            Row(
+                modifier = Modifier
+                    .padding(start = 17.dp, end = 17.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+
+            ) {
+
+                Text(
+                    text = transactionEntity.partyName!!,
+                    fontSize = 14.sp,
+                    fontFamily = robotoFamily,
+                    fontWeight = FontWeight.Medium
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "₹ " + (transactionEntity.total!! - (getTheBigger(transactionEntity.received!!,transactionEntity.paidAmt!!))).toString(),
+                        fontSize = 17.sp,
+                        fontFamily = robotoFamily,
+                        fontWeight = FontWeight.Medium,
+                        color = if (transactionEntity.type == Constants.SALE) Color(0xFF26B180) else Color(0xFFE36B4E)
+                    )
+                    Spacer(modifier = Modifier.size(5.dp))
+                    Text(
+                        text = if (transactionEntity.type == Constants.SALE) "You'll Get" else "You'll Give",
+                        fontSize = 13.sp,
+                        fontFamily = robotoFamily,
+                        fontWeight = FontWeight.Normal,
+                        color = if (transactionEntity.type == Constants.SALE) Color(0xFF26B180) else Color(0xFFE36B4E)
                     )
                 }
 
@@ -344,7 +398,7 @@ fun PartiesCard(partyEntity: PartyEntity, onClick: (PartyEntity) -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun preview() {
+fun Preview() {
     Column {
 
         TransactionCard(transactionEntity =

@@ -21,6 +21,7 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@id/tvInvNo"
         android:ems="4"
+        android:inputType="number"
         android:textSize="@dimen/sp_16" />
 
     <!--    <DatePicker-->
@@ -148,6 +149,7 @@
                     android:layout_marginEnd="@dimen/dp_10"
                     android:ems="6"
                     android:gravity="center_horizontal"
+                    android:inputType="number"
                     android:text="0"
                     android:textSize="@dimen/sp_18" />
 
@@ -157,6 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_10"
                     android:ems="6"
+                    android:inputType="number"
                     android:gravity="center_horizontal"
                     android:textSize="@dimen/sp_18" />
 
@@ -166,6 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_10"
                     android:ems="6"
+                    android:inputType="number"
                     android:gravity="center_horizontal"
                     android:textSize="@dimen/sp_18" />
 
@@ -254,13 +258,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <Button
-            android:id="@+id/btnSaveAndNew2"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_50"
-            android:layout_weight="1.5"
-            android:background="@color/save_and_btn"
-            android:text="@string/save_amp_new" />
+<!--        <Button-->
+<!--            android:id="@+id/btnSaveAndNew2"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="@dimen/dp_50"-->
+<!--            android:layout_weight="1.5"-->
+<!--            android:background="@color/save_and_btn"-->
+<!--            android:text="@string/save_amp_new" />-->
 
         <Button
             android:id="@+id/btnSave2"

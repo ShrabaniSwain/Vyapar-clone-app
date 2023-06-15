@@ -133,13 +133,42 @@ class AddPurchaseFragment : Fragment() {
         binding.rvAddPurchase.adapter = adapter
 
         binding.btnSave.setOnClickListener{
-            val name = binding.etProductNamePurchaseFragment.text.toString()
-            val quantity = binding.etQuantityProductFrag.text.toString().toInt()
-            val rate = binding.etRateProductFrag.text.toString().toDouble()
-            val tax = binding.etTaxExcluded.text.toString().toDouble()
-            val unit = binding.etUnit.text.toString()
-            sharedViewModel.addPurchase(id,name, quantity, unit, rate,tax)
-            findNavController().popBackStack()
+            if (isDataValid()) {
+                val name = binding.etProductNamePurchaseFragment.text.toString()
+                val quantity = binding.etQuantityProductFrag.text.toString().toInt()
+                val rate = binding.etRateProductFrag.text.toString().toDouble()
+                val tax = binding.etTaxExcluded.text.toString().toDouble()
+                val unit = binding.etUnit.text.toString()
+                sharedViewModel.addPurchase(id, name, quantity, unit, rate, tax)
+                findNavController().popBackStack()
+            }
         }
+    }
+
+    private fun isDataValid(): Boolean {
+        var isValid = true
+        if (binding.etProductNamePurchaseFragment.text.toString().isEmpty()) {
+            binding.etProductNamePurchaseFragment.error = "Required"
+            isValid = false
+        }
+        if (binding.etQuantityProductFrag.text.toString().isEmpty()) {
+            binding.etQuantityProductFrag.error = "Required"
+            isValid = false
+        }
+        if (binding.etRateProductFrag.text.toString().isEmpty()) {
+            binding.etRateProductFrag.error = "Required"
+            isValid = false
+        }
+        if (binding.etUnit.text.toString().isEmpty()) {
+            binding.etUnit.error = "Required"
+            isValid = false
+        }
+        if (binding.etTaxExcluded.text.toString().isEmpty()) {
+            binding.etTaxExcluded.error = "Required"
+            isValid = false
+        }
+
+
+        return isValid
     }
 }

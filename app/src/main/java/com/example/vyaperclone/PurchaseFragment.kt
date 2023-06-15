@@ -111,7 +111,7 @@ class PurchaseFragment : Fragment() {
             myIntent.type = "text/plain"
             val name =
                 "Item Details:  \n " +
-                        "Name: ${ binding.etBillNo.text}\n Paid Amount: ${ binding.etPaid.text}\n " +
+                        "BillNo: ${ binding.etBillNo.text}\n Name: ${binding.etParty.text}\n Paid Amount: ${ binding.etPaid.text}\n " +
                         " Total Amount: ${ binding.etTotal.text}\n"
 
             myIntent.putExtra(Intent.EXTRA_TEXT, name);

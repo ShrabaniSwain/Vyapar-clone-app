@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import java.math.BigDecimal
 
 class AddItemsAdapter(var addItems: List<String>,var addQuantity: List<String>,var addRate: List<String>) : RecyclerView.Adapter<AddItemsAdapter.ViewHolder>() {
 
@@ -48,7 +50,11 @@ class AddItemsAdapter(var addItems: List<String>,var addQuantity: List<String>,v
             tvProductName.text = itemName
             tvQuantity.text = itemQuantity
             tvRate.text = itemRate
-            val totalItemAmount = itemQuantity.toBigDecimal()*itemRate.toBigDecimal()
+            var totalItemAmount: Int =0
+            try {
+                totalItemAmount = itemQuantity.toInt()*itemRate.toInt()
+            } catch (e: NumberFormatException) {
+            }
             tvTotalAmount.text = totalItemAmount.toString()
             tvTotalPrice.text = totalItemAmount.toString()
         }

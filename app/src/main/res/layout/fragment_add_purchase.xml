@@ -42,6 +42,7 @@
                     android:id="@+id/etProductNamePurchaseFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:textColorHighlight="#105B7A" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -85,6 +86,7 @@
                     android:id="@+id/etQuantityProductFrag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:textColorHighlight="#105B7A" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,6 +103,7 @@
                     android:id="@+id/etUnit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:textColorHighlight="#105B7A" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,6 +122,7 @@
                     android:id="@+id/etRateProductFrag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:textColorHighlight="#105B7A" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,6 +140,7 @@
                     android:id="@+id/etTaxExcluded"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:textColorHighlight="#105B7A" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,27 +150,27 @@
     </androidx.cardview.widget.CardView>
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvSaveAndNewPurchaseFragment"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:backgroundTint="#E6E5E9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="parent">
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/cvSaveAndNewPurchaseFragment"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="55dp"-->
+<!--        android:backgroundTint="#E6E5E9"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/guideline3"-->
+<!--        app:layout_constraintStart_toStartOf="parent">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/save_amp_new"
-            android:textColor="#105B7A"
-            android:textSize="15sp" />
-    </androidx.cardview.widget.CardView>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:text="@string/save_amp_new"-->
+<!--            android:textColor="#105B7A"-->
+<!--            android:textSize="15sp" />-->
+<!--    </androidx.cardview.widget.CardView>-->
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnSave"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="55dp"
         android:backgroundTint="#105B7A"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -178,7 +183,7 @@
             android:layout_gravity="center"
             android:text="@string/save"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
 
     </androidx.cardview.widget.CardView>
 

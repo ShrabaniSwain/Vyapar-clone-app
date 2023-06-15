@@ -1,17 +1,15 @@
 package com.example.vyaperclone
 
-import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.vyaperclone.databinding.FragmentAddExpenseBinding
 import com.example.vyaperclone.databinding.FragmentAddNewPartyBinding
-import com.example.vyaperclone.databinding.FragmentOpeningBalanceBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,9 +17,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class AddNewPartyFragment : Fragment() {
 
     private lateinit var binding: FragmentAddNewPartyBinding
-    private lateinit var binding1: FragmentOpeningBalanceBinding
 
     private val partiesViewModel: PartiesViewModel by viewModels()
+    private val itemsViewModel: ItemsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +28,10 @@ class AddNewPartyFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentAddNewPartyBinding.inflate(inflater, container, false)
-        binding1 = FragmentOpeningBalanceBinding.inflate(inflater, container, false)
         return binding.root
-        return binding1.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,73 +42,69 @@ class AddNewPartyFragment : Fragment() {
         TabLayoutMediator(binding.tabLayoutAddNewParty, binding.viewPagerAddNewParty) { tab, position ->
             tab.text = when (position) {
                 0 -> "Addresses"
-                1 -> "GST"
-                2 -> "Opening Balance"
-                else -> "Addresses"
+                else -> "GST"
             }
         }.attach()
 
 
         var partyName: String = ""
         var contactNo: String = ""
-        var billingAdd: String = ""
+        var partyType: String = ""
         var amount: Long = 0
 
         binding.btnSave.setOnClickListener {
             if (isDataValid()) {
-                partyName = binding.partyNameEditText.text.toString()
-                contactNo = binding.contactNumberEditText.text.toString()
-//                billingAdd = billingAddressEditText.text.toString()
-//                amount = java.lang.Long.parseLong(binding1.openingBalanceEditText.text.toString())
-                val inputString = binding1.openingBalanceEditText.text.toString()
-                amount = inputString.toLongOrNull() ?: 0L
-                var partyEntity =
-                    PartyEntity(partyName, contactNo, "Pune", amount)
-                partiesViewModel.addParty(partyEntity)
-            }
-            activity?.onBackPressed()
-        }
+                val partyName = binding.partyNameEditText.text.toString()
+                val existingParty = Constants.existPartyName.find { it.partyName == partyName.trim() }
+                if (existingParty != null) {
+                    Toast.makeText(requireContext(), "Party name already exists", Toast.LENGTH_SHORT).show()
+                } else {
+                    val partyType = if (binding.receiveRadioButton.isChecked) "Receive" else "Pay"
+                    val contactNo = binding.contactNumberEditText.text.toString()
+                    val inputString = binding.openingBalanceEditText.text.toString()
+                    val amount = inputString.toLongOrNull() ?: 0L
+                    val partyEntity = PartyEntity(partyName, contactNo, "Pune", amount, partyType)
 
-        binding.cvImportContacts.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
-            intent.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
-            startActivityForResult(intent, 1)
+                    Constants.receiveAmount = amount.toInt()
+                    partiesViewModel.addParty(partyEntity)
+                    activity?.onBackPressed()
+                }
+            }
         }
 
     }
 
     private fun isDataValid(): Boolean {
-        if (binding.partyNameEditText.text == null) {
+        var isValid = true
+        if ( binding.partyNameEditText.text.toString().isEmpty()) {
             binding.partyNameEditText.error = "Required"
-            return false
+            isValid = false
         }
 
-        if (binding.contactNumberEditText.text == null || binding.contactNumberEditText.text.toString().length != 10) {
+        if (binding.contactNumberEditText.text.toString().isEmpty()|| binding.contactNumberEditText.text.toString().length != 10) {
             binding.contactNumberEditText.error = "Required"
-            return false
+            isValid = false
         }
-        if (binding1.openingBalanceEditText.text == null) {
-            binding1.openingBalanceEditText.error = "Required"
-            return false
+        if (binding.openingBalanceEditText.text.toString().isEmpty()) {
+            binding.openingBalanceEditText.error = "Required"
+            isValid = false
         }
 
 
-        return true
+        return isValid
     }
 }
 
 private class PartyViewPagerAdapterNew(fm: AddNewPartyFragment) :
     FragmentStateAdapter(fm) {
     override fun getItemCount(): Int {
-        return 3
+        return 2
     }
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> return AddressesFragment.newInstance()
-            1 -> return GstFragment.newInstance()
-            2 -> return OpeningBalanceFragment.newInstance()
-            else -> CategoriesFragment.newInstance()
+            else -> GstFragment.newInstance()
         }
     }
 }

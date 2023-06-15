@@ -254,13 +254,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <Button
-            android:id="@+id/btnSaveAndNew"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_50"
-            android:layout_weight="1.5"
-            android:background="@color/save_and_btn"
-            android:text="@string/save_amp_new" />
+<!--        <Button-->
+<!--            android:id="@+id/btnSaveAndNew"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="@dimen/dp_50"-->
+<!--            android:layout_weight="1.5"-->
+<!--            android:background="@color/save_and_btn"-->
+<!--            android:text="@string/save_amp_new" />-->
 
         <Button
             android:id="@+id/btnSave"

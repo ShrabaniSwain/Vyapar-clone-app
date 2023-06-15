@@ -52,7 +52,7 @@ class SaleFragment : Fragment() {
         val data = sharedViewModel.listOfSale.value
         var totalPrice: Long = 0
         for (i in data.indices) {
-            totalPrice += (data[i].price * data[i].quantity)
+            totalPrice += (data[i].rate.toLong() * data[i].quantity)
         }
         binding.etTotalAmount.setText(totalPrice.toString())
 
@@ -81,13 +81,12 @@ class SaleFragment : Fragment() {
     ): View? {
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
         binding = FragmentSaleBinding.inflate(inflater, container, false)
-        view?.findViewById<ComposeView>(com.example.vyaperclone.R.id.ItemRecyclerCompose)
-            ?.setContent {
+        binding.ItemRecyclerCompose.setContent{
                 LazyColumn() {
                     itemsIndexed(
                         items = sharedViewModel.listOfSale.value
                     ) { index, sale ->
-//                        BilledItem(sale.productName, index, sale.quantity, sale.price)
+                        BilledItem(addItems = sale)
                     }
                 }
             }
@@ -98,7 +97,7 @@ class SaleFragment : Fragment() {
         val data = sharedViewModel.listOfSale.value
         var totalPrice: Long = 0
         for (i in data.indices) {
-            totalPrice += (data[i].price * data[i].quantity)
+            totalPrice += (data[i].rate.toLong() * data[i].quantity)
         }
         binding.etTotalAmount.setText(totalPrice.toString())
 
@@ -148,7 +147,7 @@ class SaleFragment : Fragment() {
                             Constants.SALE,
                             binding.etCustomer.text.toString(),
                             convertListToBilledItems(),
-                            billedItemRate = null,
+                            convertListToBilledRate(),
                             convertListToBilledQuantity(),
                             0,
                             binding.etPaidAmount.text.toString().toLong(),
@@ -166,13 +165,13 @@ class SaleFragment : Fragment() {
 
 
         //toast msg
-        binding.btnSaveAndNew2.setOnClickListener {
-            Toast.makeText(
-                activity,
-                "Item / services name cannot be left empty",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+//        binding.btnSaveAndNew2.setOnClickListener {
+//            Toast.makeText(
+//                activity,
+//                "Item / services name cannot be left empty",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//        }
 
         binding.ibCameraSaleFragment.setOnClickListener {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -280,13 +279,27 @@ class SaleFragment : Fragment() {
         var sales = ""
         for (i in data.indices) {
             if (i == 0) {
-                sales += "${data[i].productName}"
+                sales += "${data[i].itemsName}"
             } else {
-                sales += ",${data[i].productName}"
+                sales += ",${data[i].itemsName}"
             }
 
         }
         return sales
+    }
+
+    private fun convertListToBilledRate(): String? {
+        val data = sharedViewModel.listOfSale.value
+        var rate = ""
+        for (i in data.indices) {
+            if (i == 0) {
+                rate += "${data[i].rate}"
+            } else {
+                rate += ",${data[i].rate}"
+            }
+
+        }
+        return rate
     }
 }
 

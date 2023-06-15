@@ -16,7 +16,7 @@ class SaleSharedViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    var listOfSale: MutableState<ArrayList<SaleDTO>> = mutableStateOf(arrayListOf())
+    var listOfSale: MutableState<ArrayList<AddItems>> = mutableStateOf(arrayListOf())
 
     fun addTransaction(transactionEntity: TransactionEntity) {
         viewModelScope.launch {

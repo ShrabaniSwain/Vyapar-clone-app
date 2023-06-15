@@ -2,6 +2,7 @@ package com.example.vyaperclone
 
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vyaperclone.databinding.FragmentUpdatePurchaseDataBinding
 import com.example.vyaperclone.databinding.FragmentUpdateSaleBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +31,12 @@ class UpdateSaleFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentUpdateSaleBinding
+
+    val addItemsList: List<String> = listOf(Constants.itemsName)
+    val addQuantitysList: List<String> = listOf(Constants.quantity)
+    val addRateList: List<String> = listOf(Constants.rate)
+
+    val adapter = AddItemsAdapter(addItemsList,addQuantitysList,addRateList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -127,6 +135,19 @@ class UpdateSaleFragment : Fragment() {
             viewModel.deleteTransactionByBillNo(billNoToDelete)
             findNavController().popBackStack()
         }
+
+        val itemNames = Constants.itemsName.split(",").map { it.trim() }
+        val quantities = Constants.quantity.split(",").map { it.trim() }
+        val rate = Constants.rate.split(",").map { it.trim() }
+
+        adapter.updateData(itemNames,quantities,rate)
+        if (Constants.itemsName.isEmpty()){
+            binding.recyclerviewCustomer.visibility = View.GONE
+        }else{
+            binding.recyclerviewCustomer.visibility = View.VISIBLE
+        }
+        binding.recyclerviewCustomer.layoutManager = LinearLayoutManager(context)
+        binding.recyclerviewCustomer.adapter = adapter
 
     }
 }

@@ -134,6 +134,11 @@ class UpdatePurchaseData : Fragment() {
         val rate = Constants.rate.split(",").map { it.trim() }
 
         adapter.updateData(itemNames,quantities,rate)
+        if (Constants.itemsName.isEmpty()){
+            binding.recyclerviewName.visibility = View.GONE
+        }else{
+            binding.recyclerviewName.visibility = View.VISIBLE
+        }
         binding.recyclerviewName.layoutManager = LinearLayoutManager(context)
         binding.recyclerviewName.adapter = adapter
 

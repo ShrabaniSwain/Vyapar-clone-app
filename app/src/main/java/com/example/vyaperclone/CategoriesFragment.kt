@@ -9,8 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vyaperclone.databinding.FragmentAddExpenseBinding
+import com.example.vyaperclone.databinding.FragmentAddNewPartyBinding
 import com.example.vyaperclone.databinding.FragmentCategoriesBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoriesFragment : Fragment() {
     private lateinit var binding: FragmentCategoriesBinding
 
@@ -24,7 +27,8 @@ class CategoriesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_categories, container, false)
+        binding = FragmentCategoriesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     companion object {

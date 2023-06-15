@@ -73,7 +73,6 @@
         android:id="@+id/recyclerviewCustomer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_below="@id/etCustomer"/>
 
     <View
@@ -92,6 +91,7 @@
         android:layout_margin="@dimen/dp_10"
         android:background="@color/add_items_btn"
         android:text="@string/add_items_optional"
+        android:visibility="gone"
         android:textColor="@color/add_items_grey" />
 
     <androidx.compose.ui.platform.ComposeView

@@ -1,5 +1,6 @@
 package com.example.vyaperclone
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -44,9 +45,11 @@ class ItemsViewModel @Inject constructor(
     var transcations: MutableState<List<TransactionEntity>> = mutableStateOf(listOf())
     var parties: MutableState<List<PartyEntity>> = mutableStateOf(listOf())
     var totalToGet: MutableState<Long> = mutableStateOf(0)
+    var totalToGetItem: MutableState<Long> = mutableStateOf(0)
     var totalSale: MutableState<Long> = mutableStateOf(0)
     var totalPurchase: MutableState<Long> = mutableStateOf(0)
     var totalToGive: MutableState<Long> = mutableStateOf(0)
+    var totalToGiveItem: MutableState<Long> = mutableStateOf(0)
     var totalExpenses: MutableState<Long> = mutableStateOf(0)
     var searchQuery: MutableState<String> = mutableStateOf("")
     val updatedTransaction = MutableLiveData<TransactionEntity?>()
@@ -88,6 +91,17 @@ class ItemsViewModel @Inject constructor(
     fun getAllParties() {
         repository.getAllParties().observeForever() {
             parties.value = it
+            var togetItem: Long = 0;
+            var togiveItem: Long = 0;
+            for (parties in it) {
+                if (parties.amout != null && parties.partyType == "Receive") {
+                    togetItem += parties.amout!!
+                } else if(parties.amout != null){
+                    togiveItem += parties.amout!!
+                }
+            }
+            totalToGiveItem.value = togiveItem
+            totalToGetItem.value = togetItem
         }
 
     }
