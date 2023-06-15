@@ -55,9 +55,9 @@ class AddNewPartyFragment : Fragment() {
         binding.btnSave.setOnClickListener {
             if (isDataValid()) {
                 val partyName = binding.partyNameEditText.text.toString()
-                val existingParty = Constants.existPartyName.find { it.partyName == partyName.trim() }
+                val existingParty = Constants.existPartyName.find {it.partyName.equals(partyName.trim(), ignoreCase = true)}
                 if (existingParty != null) {
-                    Toast.makeText(requireContext(), "Party name already exists", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "This Party name already exist.Create a new party name", Toast.LENGTH_LONG).show()
                 } else {
                     val partyType = if (binding.receiveRadioButton.isChecked) "Receive" else "Pay"
                     val contactNo = binding.contactNumberEditText.text.toString()

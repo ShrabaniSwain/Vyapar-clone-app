@@ -1,9 +1,6 @@
 package com.example.vyaperclone
 
-<<<<<<< HEAD
 import android.app.Dialog
-=======
->>>>>>> 52c58d9be6d2a9260d7b29b555cb0f9164f3ff8f
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -201,7 +198,9 @@ class ItemsFragment : Fragment() {
                                 itemsIndexed(
                                     items = viewModel.parties.value
                                 ) { index, party ->
-                                    PartiesCard(partyEntity = party, onClick = { /*TODO*/ })
+                                    PartiesCard(partyEntity = party, onClick = { /*TODO*/
+                                        val action = PartyDetailsFragmentDirections.actionPartyDetailsFragment()
+                                        findNavController().navigate(action)})
                                 }
                             }
                             Constants.existPartyName =  viewModel.parties.value
@@ -216,7 +215,8 @@ class ItemsFragment : Fragment() {
                             LazyColumn() {
                                 itemsIndexed(
                                     items = viewModel.transcations.value
-                                ) { index, transaction ->
+                                )
+                                { index, transaction ->
 
                                     if (viewModel.searchQuery.value.isEmpty()) {
                                         TransactionCard(
@@ -254,6 +254,7 @@ class ItemsFragment : Fragment() {
                                     }
 
                                 }
+                                Constants.partyDetails = viewModel.transcations.value
                             }
                         }
                     }

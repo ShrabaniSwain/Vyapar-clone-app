@@ -133,7 +133,6 @@ class AddPurchaseFragment : Fragment() {
         binding.rvAddPurchase.adapter = adapter
 
         binding.btnSave.setOnClickListener{
-<<<<<<< HEAD
             if (isDataValid()) {
                 val name = binding.etProductNamePurchaseFragment.text.toString()
                 val quantity = binding.etQuantityProductFrag.text.toString().toInt()
@@ -169,9 +168,7 @@ class AddPurchaseFragment : Fragment() {
             isValid = false
         }
 
-
         return isValid
-=======
             val name = binding.etProductNamePurchaseFragment.text.toString()
             val quantity = binding.etQuantityProductFrag.text.toString().toInt()
             val rate = binding.etRateProductFrag.text.toString().toDouble()
@@ -180,6 +177,5 @@ class AddPurchaseFragment : Fragment() {
             sharedViewModel.addPurchase(id,name, quantity, unit, rate,tax)
             findNavController().popBackStack()
         }
->>>>>>> 52c58d9be6d2a9260d7b29b555cb0f9164f3ff8f
-    }
+
 }

@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_updateSaleFragment"
             app:destination="@id/updateSaleFragment" />
+        <action
+            android:id="@+id/action_partyDetailsFragment"
+            app:destination="@id/partyDetailsFragment" />
     </fragment>
 
     <fragment
@@ -222,6 +225,16 @@
         tools:layout="@layout/fragment_update_sale">
         <action
             android:id="@+id/action_updateSaleFragment"
+            app:destination="@id/nav_items" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/partyDetailsFragment"
+        android:name="com.example.vyaperclone.PartyDetailsFragment"
+        android:label="@string/big"
+        tools:layout="@layout/fragment_party_details">
+        <action
+            android:id="@+id/action_partyDetailsFragment"
             app:destination="@id/nav_items" />
     </fragment>
 
