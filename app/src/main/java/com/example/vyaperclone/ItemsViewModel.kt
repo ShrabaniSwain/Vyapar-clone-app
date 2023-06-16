@@ -19,7 +19,6 @@ class ItemsViewModel @Inject constructor(
     init {
         getAllItems()
         getAllTransactions()
-        getAllParties()
 //         addItem(ItemsEntity("cola", "sale", "33", "as", 332, 231, 0.6f, 30))
 //         addItem(ItemsEntity("car", "sale", "33", "as", 332, 231, 0.6f, 30))
 //         addItem(ItemsEntity("book", "sale", "33", "as", 332, 231, 0.6f, 30))
@@ -43,7 +42,7 @@ class ItemsViewModel @Inject constructor(
 
     var items: MutableState<List<ItemsEntity>> = mutableStateOf(listOf())
     var transcations: MutableState<List<TransactionEntity>> = mutableStateOf(listOf())
-    var parties: MutableState<List<PartyEntity>> = mutableStateOf(listOf())
+    var parties: MutableState<List<TransactionEntity>> = mutableStateOf(listOf())
     var totalToGet: MutableState<Long> = mutableStateOf(0)
     var totalToGetItem: MutableState<Long> = mutableStateOf(0)
     var totalSale: MutableState<Long> = mutableStateOf(0)
@@ -72,12 +71,17 @@ class ItemsViewModel @Inject constructor(
             var togive: Long = 0;
 
             for (transaction in it) {
-                if (transaction.total != null && transaction.type != Constants.PURCHASE) {
+                if (transaction.total != null && transaction.type == Constants.SALE) {
                     sale += transaction.total!!
-                    toget += transaction.total!! - transaction.received!!
-                } else if (transaction.total != null) {
+                    toget += (transaction.total ?: 0) - (transaction.received ?: 0)
+                } else if (transaction.total != null  && transaction.type == Constants.PURCHASE) {
                     pruchase += transaction.total!!
-                    togive += (transaction.total!! - transaction.paidAmt!!)
+                    togive += (transaction.total ?: 0) - (transaction.paidAmt ?: 0)
+                }else if (transaction.total!= null && transaction.type == "Receive"){
+                    toget += (transaction.total ?: 0)
+                }
+                else if (transaction.total!= null && transaction.type == "Pay"){
+                    togive += (transaction.total ?: 0)
                 }
             }
 
@@ -90,18 +94,7 @@ class ItemsViewModel @Inject constructor(
 
     fun getAllParties() {
         repository.getAllParties().observeForever() {
-            parties.value = it
-            var togetItem: Long = 0;
-            var togiveItem: Long = 0;
-            for (parties in it) {
-                if (parties.amout != null && parties.partyType == "Receive") {
-                    togetItem += parties.amout!!
-                } else if(parties.amout != null){
-                    togiveItem += parties.amout!!
-                }
-            }
-            totalToGiveItem.value = togiveItem
-            totalToGetItem.value = togetItem
+            transcations.value = it
         }
 
     }
@@ -127,7 +120,7 @@ class ItemsViewModel @Inject constructor(
         }
     }
 
-    fun addParty(partyEntity: PartyEntity) {
+    fun addParty(partyEntity: TransactionEntity) {
         viewModelScope.launch {
             repository.addParty(partyEntity)
         }

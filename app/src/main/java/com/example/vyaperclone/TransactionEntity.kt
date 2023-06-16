@@ -15,7 +15,8 @@ data class TransactionEntity(
     @ColumnInfo(name = "paidAmt") var paidAmt: Long?,
     @ColumnInfo(name = "received") var received: Long?,
     @ColumnInfo(name = "total") var total: Long?,
-) {
+    @ColumnInfo(name = "partyContactNumber") var partyContactNumber: String?,
+    @ColumnInfo(name = "partyBillingAddress") var partyBillingAddress: String?, ) {
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null

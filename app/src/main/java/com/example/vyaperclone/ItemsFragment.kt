@@ -96,7 +96,7 @@ class ItemsFragment : Fragment() {
                             Spacer(modifier = Modifier.size(10.dp))
                             TotalInformationCard(
                                 name = context.getString(R.string.youll_get),
-                                viewModel.totalToGet.value+viewModel.totalToGetItem.value,
+                                viewModel.totalToGet.value,
                                 R.drawable.ic_arrow_downward,
                                 Constants.YOUWILLGETINT,
                                 { })
@@ -112,7 +112,7 @@ class ItemsFragment : Fragment() {
 
                             TotalInformationCard(
                                 name = context.getString(R.string.youll_give),
-                                viewModel.totalToGive.value+viewModel.totalToGiveItem.value,
+                                viewModel.totalToGive.value,
                                 R.drawable.ic_upward,
                                 Constants.YOUWILLGIVEINT,
                                 { })
@@ -196,21 +196,14 @@ class ItemsFragment : Fragment() {
                         } else if (viewModel.selectedType.value == 0) {
                             LazyColumn() {
                                 itemsIndexed(
-                                    items = viewModel.parties.value
+                                    items = viewModel.transcations.value
                                 ) { index, party ->
                                     PartiesCard(partyEntity = party, onClick = { /*TODO*/
                                         val action = PartyDetailsFragmentDirections.actionPartyDetailsFragment()
                                         findNavController().navigate(action)})
                                 }
                             }
-                            Constants.existPartyName =  viewModel.parties.value
-                            LazyColumn() {
-                                itemsIndexed(
-                                    items = viewModel.transcations.value
-                                ) { index, transaction ->
-                                    TransactionPartiesCard(transactionEntity = transaction, onClick = { /*TODO*/ })
-                                }
-                            }
+                            Constants.existPartyName =  viewModel.transcations.value
                         } else if (viewModel.selectedType.value == 1) {
                             LazyColumn() {
                                 itemsIndexed(
@@ -218,7 +211,7 @@ class ItemsFragment : Fragment() {
                                 )
                                 { index, transaction ->
 
-                                    if (viewModel.searchQuery.value.isEmpty()) {
+                                    if (viewModel.searchQuery.value.isEmpty() && (transaction.type == Constants.PURCHASE || transaction.type == Constants.SALE)) {
                                         TransactionCard(
                                             transactionEntity = transaction,
                                             onClick = { /*TODO*/
@@ -247,7 +240,7 @@ class ItemsFragment : Fragment() {
                                                     Constants.quantity = transaction.billedItemQuantity.toString()
                                                     Constants.rate = transaction.billedItemRate.toString()
                                                 }})
-                                    } else if (transaction.partyName!!.contains(viewModel.searchQuery.value)) {
+                                    } else if (transaction.partyName!!.contains(viewModel.searchQuery.value) && (transaction.type == Constants.PURCHASE || transaction.type == Constants.SALE)){
                                         TransactionCard(
                                             transactionEntity = transaction,
                                             onClick = { /*TODO*/ })

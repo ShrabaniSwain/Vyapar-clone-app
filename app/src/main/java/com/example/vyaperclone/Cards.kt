@@ -238,7 +238,7 @@ fun TransactionCard(
                             )
                             Spacer(modifier = Modifier.size(5.dp))
                             Text(
-                                text = "₹ " + (transactionEntity.total!! - (getTheBigger(transactionEntity.received!!,transactionEntity.paidAmt!!))).toString(),
+                                text = "₹ " + ((transactionEntity.total ?: 0) - getTheBigger(transactionEntity.received ?: 0, transactionEntity.paidAmt ?: 0)).toString(),
                                 fontSize = 15.sp,
                                 fontFamily = robotoFamily,
                                 fontWeight = FontWeight.Normal
@@ -289,7 +289,7 @@ fun getTheBigger(received: Long, paidAmt: Long): Long {
 }
 
 @Composable
-fun PartiesCard(partyEntity: PartyEntity, onClick: (PartyEntity) -> Unit) {
+fun PartiesCard(partyEntity: TransactionEntity, onClick: (TransactionEntity) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Card(
             modifier = Modifier
@@ -319,73 +319,19 @@ fun PartiesCard(partyEntity: PartyEntity, onClick: (PartyEntity) -> Unit) {
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "₹ "+abs(partyEntity.amout!!).toString(),
+                        text = "₹ " + ((partyEntity.total ?: 0) - getTheBigger(partyEntity.received ?: 0, partyEntity.paidAmt ?: 0)).toString(),
                         fontSize = 17.sp,
                         fontFamily = robotoFamily,
                         fontWeight = FontWeight.Medium,
-                        color = if (partyEntity.partyType == "Receive") Color(0xFF26B180) else Color(0xFFE36B4E)
+                        color = if (partyEntity.type == "Receive" || partyEntity.type == Constants.SALE) Color(0xFF26B180) else Color(0xFFE36B4E)
                     )
                     Spacer(modifier = Modifier.size(5.dp))
                     Text(
-                        text = if (partyEntity.partyType == "Receive") "You'll Get" else "You'll Give",
+                        text = if (partyEntity.type == "Receive" || partyEntity.type == Constants.SALE) "You'll Get" else "You'll Give",
                         fontSize = 13.sp,
                         fontFamily = robotoFamily,
                         fontWeight = FontWeight.Normal,
-                        color = if (partyEntity.partyType == "Receive") Color(0xFF26B180) else Color(0xFFE36B4E)
-                    )
-                }
-
-            }
-        }
-        Divider(color = Color.LightGray, thickness = 1.dp)
-    }
-
-}
-
-@Composable
-fun TransactionPartiesCard(transactionEntity: TransactionEntity, onClick: (TransactionEntity) -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Card(
-            modifier = Modifier
-                .height(65.dp)
-                .fillMaxWidth()
-                .clickable { onClick(transactionEntity) },
-        ) {
-
-            Row(
-                modifier = Modifier
-                    .padding(start = 17.dp, end = 17.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-
-            ) {
-
-                Text(
-                    text = transactionEntity.partyName!!,
-                    fontSize = 14.sp,
-                    fontFamily = robotoFamily,
-                    fontWeight = FontWeight.Medium
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = "₹ " + (transactionEntity.total!! - (getTheBigger(transactionEntity.received!!,transactionEntity.paidAmt!!))).toString(),
-                        fontSize = 17.sp,
-                        fontFamily = robotoFamily,
-                        fontWeight = FontWeight.Medium,
-                        color = if (transactionEntity.type == Constants.SALE) Color(0xFF26B180) else Color(0xFFE36B4E)
-                    )
-                    Spacer(modifier = Modifier.size(5.dp))
-                    Text(
-                        text = if (transactionEntity.type == Constants.SALE) "You'll Get" else "You'll Give",
-                        fontSize = 13.sp,
-                        fontFamily = robotoFamily,
-                        fontWeight = FontWeight.Normal,
-                        color = if (transactionEntity.type == Constants.SALE) Color(0xFF26B180) else Color(0xFFE36B4E)
+                        color = if (partyEntity.type == "Receive" || partyEntity.type == Constants.SALE) Color(0xFF26B180) else Color(0xFFE36B4E)
                     )
                 }
 
@@ -411,7 +357,9 @@ fun Preview() {
             "10,15",
             1000,
             500,
-            1000
+            1000,
+            "8917281008",
+            "Odisha"
         ), onClick = { /*TODO*/ })
         TransactionCard(transactionEntity =
         TransactionEntity(
@@ -423,7 +371,9 @@ fun Preview() {
             "10,15",
             1000,
             500,
-            1000
+            1000,
+            "8917281008",
+            "Odisha"
         ), onClick = { /*TODO*/ })
 
     }

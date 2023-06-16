@@ -11,7 +11,7 @@ class PartiesViewModel @Inject constructor(
     private val repository: ItemsRepository
 ) : ViewModel() {
 
-    fun addParty(partyEntity: PartyEntity){
+    fun addParty(partyEntity: TransactionEntity){
         viewModelScope.launch {
             repository.addParty(partyEntity)
         }

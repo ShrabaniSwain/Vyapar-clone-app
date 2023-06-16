@@ -19,7 +19,7 @@ class Constants {
         var itemsName = ""
         var quantity= "0"
         var rate= "0"
-        var existPartyName: List<PartyEntity> = emptyList()
+        var existPartyName: List<TransactionEntity> = emptyList()
         var partyDetails: List<TransactionEntity> = emptyList()
         var receiveAmount= 0
     }

@@ -152,7 +152,9 @@ class SaleFragment : Fragment() {
                             convertListToBilledQuantity(),
                             0,
                             binding.etPaidAmount.text.toString().toLong(),
-                            binding.etTotalAmount.text.toString().toLong()
+                            binding.etTotalAmount.text.toString().toLong(),
+                            partyContactNumber = null,
+                            partyBillingAddress = null
                         )
                     )
                     sharedViewModel.listOfSale.value.clear()

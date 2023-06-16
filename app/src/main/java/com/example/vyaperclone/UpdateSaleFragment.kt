@@ -124,7 +124,9 @@ class UpdateSaleFragment : Fragment() {
                 billedItemRate = null,
                 billedItemQuantity = null,
                 paidAmt = updatedPaidAmt.toLong(),0,
-                total = updatedTotalAmount.toLong()
+                total = updatedTotalAmount.toLong(),
+                partyContactNumber = null,
+                partyBillingAddress = null
             )
 
             viewModel.updateTransaction(updatedTransaction)

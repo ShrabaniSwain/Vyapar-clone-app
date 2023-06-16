@@ -89,7 +89,9 @@ class PurchaseFragment : Fragment() {
                             convertListToBilledQuantity(),
                             binding.etPaid.text.toString().toLong(),
                             0,
-                            binding.etTotal.text.toString().toLong()
+                            binding.etTotal.text.toString().toLong(),
+                            partyContactNumber = null,
+                            partyBillingAddress = null
                         )
                     )
                     sharedViewModel.listOfPurchase.value.clear()

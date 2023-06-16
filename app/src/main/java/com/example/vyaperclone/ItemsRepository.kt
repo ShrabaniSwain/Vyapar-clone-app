@@ -13,7 +13,7 @@ class ItemsRepository(private val databaseDao: VyaparDAO) {
         return databaseDao.getAllTransactions()
     }
 
-    fun getAllParties(): LiveData<List<PartyEntity>> {
+    fun getAllParties(): LiveData<List<TransactionEntity>> {
         return databaseDao.getAllParties()
     }
 
@@ -25,7 +25,7 @@ class ItemsRepository(private val databaseDao: VyaparDAO) {
         databaseDao.insertItem(itemsEntity)
     }
 
-    suspend fun addParty(partyEntity: PartyEntity) {
+    suspend fun addParty(partyEntity: TransactionEntity) {
         databaseDao.insertParty(partyEntity)
     }
 
@@ -55,11 +55,11 @@ class ItemsRepository(private val databaseDao: VyaparDAO) {
         val party = databaseDao.getSpecificParty(partyName)
         if (type == Constants.PURCHASE) {
             if (party != null) {
-                party.amout = party.amout?.minus(total)
+                party.total = party.total?.minus(total)
             }
         } else {
             if (party != null) {
-                party.amout = party.amout?.plus(total)
+                party.total = party.total?.plus(total)
             }
         }
         if (party != null) {

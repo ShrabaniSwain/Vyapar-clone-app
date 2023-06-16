@@ -10,7 +10,7 @@ interface VyaparDAO {
     suspend fun insertItem(itemsEntity: ItemsEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertParty(partyEntity: PartyEntity)
+    suspend fun insertParty(partyEntity: TransactionEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransaction(transactionEntity: TransactionEntity)
@@ -27,7 +27,7 @@ interface VyaparDAO {
     fun getAllTransactions(): LiveData<List<TransactionEntity>>
 
     @Query("SELECT * FROM partyTable")
-    fun getAllParties(): LiveData<List<PartyEntity>>
+    fun getAllParties(): LiveData<List<TransactionEntity>>
 
     @Query("SELECT * FROM expensetable")
     fun getAllExpenses(): LiveData<List<ExpenseEntity>>
@@ -36,13 +36,13 @@ interface VyaparDAO {
     suspend fun getSpecificItem(itemName: String): ItemsEntity?
 
     @Query("SELECT * FROM partyTable WHERE partyName= :partyName")
-    suspend fun getSpecificParty(partyName: String): PartyEntity?
+    suspend fun getSpecificParty(partyName: String): TransactionEntity?
 
     @Update
     suspend fun updateItems(itemsEntity: ItemsEntity)
 
     @Update
-    suspend fun updateParty(partyEntity: PartyEntity)
+    suspend fun updateParty(partyEntity: TransactionEntity)
 
     @Query("UPDATE transactionsTable SET partyName = :partyName, total = :total, paidAmt = :paidAmt, received = :received WHERE billNo = :billNo")
     suspend fun updateTransaction(

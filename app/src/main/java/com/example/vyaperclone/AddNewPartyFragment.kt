@@ -50,7 +50,8 @@ class AddNewPartyFragment : Fragment() {
         var partyName: String = ""
         var contactNo: String = ""
         var partyType: String = ""
-        var amount: Long = 0
+        var receiveAmount: Long = 0
+        var paidAmount: Long = 0
 
         binding.btnSave.setOnClickListener {
             if (isDataValid()) {
@@ -63,9 +64,15 @@ class AddNewPartyFragment : Fragment() {
                     val contactNo = binding.contactNumberEditText.text.toString()
                     val inputString = binding.openingBalanceEditText.text.toString()
                     val amount = inputString.toLongOrNull() ?: 0L
-                    val partyEntity = PartyEntity(partyName, contactNo, "Pune", amount, partyType)
 
-                    Constants.receiveAmount = amount.toInt()
+                    if (binding.receiveRadioButton.isChecked){
+                         receiveAmount = inputString.toLongOrNull() ?: 0L
+                    }else{
+                         paidAmount = inputString.toLongOrNull() ?: 0L
+                    }
+                    val partyEntity = TransactionEntity(billNo = null,type = partyType,partyName = partyName,billedItemNames = null,billedItemRate = null,
+                    billedItemQuantity = null,paidAmt = null, received = null,total = amount, partyContactNumber = contactNo,partyBillingAddress = null)
+
                     partiesViewModel.addParty(partyEntity)
                     activity?.onBackPressed()
                 }

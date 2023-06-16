@@ -8,7 +8,7 @@ import androidx.work.impl.WorkDatabaseMigrations.MIGRATION_1_2
 
 @Database(
     entities = [ItemsEntity::class, PartyEntity::class, TransactionEntity::class, ExpenseEntity::class, AddItems::class],
-    version = 4
+    version = 5
 )
 abstract class VyaparDatabase : RoomDatabase() {
     abstract fun getDAO(): VyaparDAO
