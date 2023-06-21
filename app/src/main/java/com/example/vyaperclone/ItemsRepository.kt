@@ -121,7 +121,9 @@ class ItemsRepository(private val databaseDao: VyaparDAO) {
     }
 
     suspend fun updateTransaction(transactionEntity: TransactionEntity) {
-            databaseDao.updateTransaction(transactionEntity.billNo,transactionEntity.partyName,transactionEntity.total,transactionEntity.paidAmt,transactionEntity.received)
+            databaseDao.updateTransaction(transactionEntity.billNo,transactionEntity.partyName,transactionEntity.total,transactionEntity.paidAmt,transactionEntity.received,
+                transactionEntity.partyContactNumber.toString()
+            )
     }
 
     suspend fun deleteTransactionByBillNo(billNo: Int) {

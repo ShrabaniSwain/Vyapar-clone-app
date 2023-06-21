@@ -72,6 +72,10 @@ class UpdatePurchaseData : Fragment() {
         binding.etParty.text = editablePartyName
         binding.etParty.isEnabled = false
 
+        val editableContactNo = Editable.Factory.getInstance().newEditable(Constants.CONTACTNO)
+        binding.etContactNo.text = editableContactNo
+        binding.etContactNo.isEnabled = false
+
         val editableTotalAmount =
             Editable.Factory.getInstance().newEditable(Constants.TotalAmt.toString())
         binding.etTotal.text = editableTotalAmount
@@ -94,6 +98,7 @@ class UpdatePurchaseData : Fragment() {
 
         binding.btnEdit.setOnClickListener {
             binding.etParty.isEnabled = true
+            binding.etContactNo.isEnabled = true
             binding.etTotal.isEnabled = true
             binding.etPaid.isEnabled = true
             binding.balanceDue.isEnabled = true
@@ -104,6 +109,7 @@ class UpdatePurchaseData : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val updatedPartyName = binding.etParty.text.toString()
+            val updatedContactNo = binding.etContactNo.text.toString()
             val updatedTotalAmount = binding.etTotal.text.toString().toInt()
             val updatedPaidAmt = binding.etPaid.text.toString().toInt()
             val updatedBillNo = binding.etBillNo.text.toString().toInt()
@@ -117,7 +123,7 @@ class UpdatePurchaseData : Fragment() {
                 billedItemQuantity = null,
                 paidAmt = updatedPaidAmt.toLong(),0,
                 total = updatedTotalAmount.toLong(),
-                partyContactNumber = null,
+                partyContactNumber = updatedContactNo,
                 partyBillingAddress = null
             )
 

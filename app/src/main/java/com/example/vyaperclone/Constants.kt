@@ -4,6 +4,8 @@ class Constants {
     companion object {
         const val PURCHASE = "purchase"
         const val SALE = "sale"
+        const val LENDIN = "lendIn"
+        const val LENDOUT = "lendOut"
         const val SALEINT = 6
         const val YOUWILLGETINT = 7
         const val YOUWILLGIVEINT = 8
@@ -21,6 +23,11 @@ class Constants {
         var rate= "0"
         var existPartyName: List<TransactionEntity> = emptyList()
         var partyDetails: List<TransactionEntity> = emptyList()
-        var receiveAmount= 0
+        var AllPartyName = ""
+        var PartyType = ""
+        var Amount = ""
+        var ReceivedAmount = ""
+        var PaidAmount = ""
+        var CONTACTNO = ""
     }
 }

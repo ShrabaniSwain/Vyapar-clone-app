@@ -231,7 +231,7 @@
     <fragment
         android:id="@+id/partyDetailsFragment"
         android:name="com.example.vyaperclone.PartyDetailsFragment"
-        android:label="@string/big"
+        android:label="Customers Details"
         tools:layout="@layout/fragment_party_details">
         <action
             android:id="@+id/action_partyDetailsFragment"

@@ -22,9 +22,6 @@ class PurchaseSharedViewModel @Inject constructor(
         viewModelScope.launch {
             repository.addTransaction(transactionEntity)
         }
-        Log.d("salesshared", transactionEntity.billedItemNames!!)
-        Log.d("salesshared", transactionEntity.billedItemQuantity!!)
-        Log.d("salesshared", transactionEntity.billedItemRate!!)
     }
     fun getReport(): LiveData<List<TransactionEntity>> {
         return repository.getAllTransactions()

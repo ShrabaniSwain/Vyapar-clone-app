@@ -163,9 +163,7 @@ fun TransactionCard(
                 Surface(
                     modifier = Modifier.height(20.dp),
                     shape = MaterialTheme.shapes.small,
-                    color = if (transactionEntity.type == "purchase") Color(0xFFFEE4DC) else Color(
-                        0xFFD1F2E7
-                    ),
+                    color = if (transactionEntity.type == "purchase" || transactionEntity.type == Constants.LENDIN || transactionEntity.type == "Pay") Color(0xFFFEE4DC) else Color( 0xFFD1F2E7),
 
                     ) {
                     Column(
@@ -176,14 +174,42 @@ fun TransactionCard(
                                 text = "PURCHASE",
                                 modifier = Modifier.padding(start=5.dp,end =5.dp),
                                 color = Color(0xFFE36B4E),
-                                fontSize = 10.sp
+                                fontSize = 12.sp
                             )
-                        } else {
+                        } else if (transactionEntity.type == Constants.SALE){
                             Text(
                                 text = "SALE",
                                 modifier = Modifier.padding(start=5.dp,end =5.dp),
                                 color = Color(0xFF26B180),
-                                fontSize = 10.sp
+                                fontSize = 12.sp
+                            )
+                        }else if (transactionEntity.type == Constants.LENDIN){
+                            Text(
+                                text = "LEND (IN)",
+                                modifier = Modifier.padding(start=5.dp,end =5.dp),
+                                color = Color(0xFFE36B4E),
+                                fontSize = 12.sp
+                            )
+                        }else if (transactionEntity.type == Constants.LENDOUT){
+                            Text(
+                                text = "LEND (OUT)",
+                                modifier = Modifier.padding(start=5.dp,end =5.dp),
+                                color = Color(0xFF26B180),
+                                fontSize = 12.sp
+                            )
+                        }else if (transactionEntity.type == "Receive"){
+                            Text(
+                                text = "Opening Balance (Receivable)",
+                                modifier = Modifier.padding(start=5.dp,end =5.dp),
+                                color = Color(0xFF26B180),
+                                fontSize = 12.sp
+                            )
+                        }else if(transactionEntity.type == "Pay"){
+                            Text(
+                                text = "Opening Balance (Payable)",
+                                modifier = Modifier.padding(start=5.dp,end =5.dp),
+                                color = Color(0xFFE36B4E),
+                                fontSize = 12.sp
                             )
                         }
                     }

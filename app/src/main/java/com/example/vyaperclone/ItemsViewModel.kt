@@ -77,7 +77,7 @@ class ItemsViewModel @Inject constructor(
                 } else if (transaction.total != null  && transaction.type == Constants.PURCHASE) {
                     pruchase += transaction.total!!
                     togive += (transaction.total ?: 0) - (transaction.paidAmt ?: 0)
-                }else if (transaction.total!= null && transaction.type == "Receive"){
+                }else if (transaction.total!= null && transaction.type == "Receive" || transaction.type == Constants.LENDIN){
                     toget += (transaction.total ?: 0)
                 }
                 else if (transaction.total!= null && transaction.type == "Pay"){

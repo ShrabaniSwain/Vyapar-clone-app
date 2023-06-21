@@ -83,6 +83,10 @@ class UpdateSaleFragment : Fragment() {
         binding.etCustomer.text=editablePartyName
         binding.etCustomer.isEnabled = false
 
+        val editableContact = Editable.Factory.getInstance().newEditable(Constants.CONTACTNO)
+        binding.etContactNo.text=editableContact
+        binding.etContactNo.isEnabled = false
+
         val editableTotalAmount = Editable.Factory.getInstance().newEditable(Constants.TotalAmt.toString())
         binding.etTotalAmount.text=editableTotalAmount
         binding.etTotalAmount.isEnabled = false
@@ -102,6 +106,7 @@ class UpdateSaleFragment : Fragment() {
 
         binding.btnEdit.setOnClickListener {
             binding.etCustomer.isEnabled = true
+            binding.etContactNo.isEnabled = true
             binding.etTotalAmount.isEnabled = true
             binding.etPaidAmount.isEnabled = true
             binding.etBalanceDue.isEnabled = true
@@ -112,6 +117,7 @@ class UpdateSaleFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val updatedPartyName = binding.etCustomer.text.toString()
+            val updatedContact = binding.etContactNo.text.toString()
             val updatedTotalAmount = binding.etTotalAmount.text.toString().toInt()
             val updatedPaidAmt = binding.etPaidAmount.text.toString().toInt()
             val updatedBillNo = binding.etInvNo.text.toString().toInt()
@@ -125,7 +131,7 @@ class UpdateSaleFragment : Fragment() {
                 billedItemQuantity = null,
                 paidAmt = updatedPaidAmt.toLong(),0,
                 total = updatedTotalAmount.toLong(),
-                partyContactNumber = null,
+                partyContactNumber = updatedContact,
                 partyBillingAddress = null
             )
 

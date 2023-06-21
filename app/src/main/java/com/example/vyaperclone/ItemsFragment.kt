@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -31,11 +33,12 @@ import com.example.vyaperclone.databinding.FragmentItemsBinding
 import com.example.vyaperclone.databinding.FragmentPurchaseBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ItemsFragment : Fragment() {
     lateinit var binding: FragmentItemsBinding
-    private var topSheetView: View? = null
 
 
     private fun addItem(item: Int) {
@@ -69,6 +72,7 @@ class ItemsFragment : Fragment() {
 
     private val viewModel: ItemsViewModel by viewModels()
     val sharedViewModel: ItemsViewModel by activityViewModels()
+    val purchaseSharedViewModel: PurchaseSharedViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -198,9 +202,19 @@ class ItemsFragment : Fragment() {
                                 itemsIndexed(
                                     items = viewModel.transcations.value
                                 ) { index, party ->
-                                    PartiesCard(partyEntity = party, onClick = { /*TODO*/
-                                        val action = PartyDetailsFragmentDirections.actionPartyDetailsFragment()
-                                        findNavController().navigate(action)})
+                                    if (party.type == Constants.PURCHASE || party.type == Constants.SALE || party.type == "Receive" || party.type == "Pay"){
+                                        PartiesCard(partyEntity = party, onClick = { /*TODO*/
+                                            val action =
+                                                PartyDetailsFragmentDirections.actionPartyDetailsFragment()
+                                            findNavController().navigate(action)
+                                            Constants.AllPartyName = party.partyName.toString()
+                                            Constants.PartyType = party.type.toString()
+                                            Constants.Amount = party.total.toString()
+                                            Constants.ReceivedAmount = party.received.toString()
+                                            Constants.PaidAmount = party.paidAmt.toString()
+                                            Constants.CONTACTNO = party.partyContactNumber.toString()
+                                        })
+                                }
                                 }
                             }
                             Constants.existPartyName =  viewModel.transcations.value
@@ -227,6 +241,7 @@ class ItemsFragment : Fragment() {
                                                     Constants.itemsName = transaction.billedItemNames.toString()
                                                     Constants.quantity = transaction.billedItemQuantity.toString()
                                                     Constants.rate = transaction.billedItemRate.toString()
+                                                    Constants.CONTACTNO = transaction.partyContactNumber.toString()
                                                 }
                                                 else{
                                                     val action = UpdateSaleFragmentDirections.actionUpdateSaleFragment()
@@ -239,6 +254,7 @@ class ItemsFragment : Fragment() {
                                                     Constants.itemsName = transaction.billedItemNames.toString()
                                                     Constants.quantity = transaction.billedItemQuantity.toString()
                                                     Constants.rate = transaction.billedItemRate.toString()
+                                                    Constants.CONTACTNO = transaction.partyContactNumber.toString()
                                                 }})
                                     } else if (transaction.partyName!!.contains(viewModel.searchQuery.value) && (transaction.type == Constants.PURCHASE || transaction.type == Constants.SALE)){
                                         TransactionCard(
@@ -318,6 +334,28 @@ class ItemsFragment : Fragment() {
 
         dialog.window?.attributes = layoutParams
         dialog.show()
+
+        val btnRecoveryPayment = dialogView?.findViewById<Button>(R.id.btnRecoveryPayment)
+        val etRecoveryName = dialogView?.findViewById<EditText>(R.id.etRecoveryName)
+        val etRecoveryAmount = dialogView?.findViewById<EditText>(R.id.etRecoveryAmount)
+        btnRecoveryPayment?.setOnClickListener {
+            MainScope().launch{
+                purchaseSharedViewModel.addTransaction(
+                    TransactionEntity(
+                        billNo = null,
+                        Constants.LENDOUT,
+                        etRecoveryName?.text.toString(),
+                        "", "","",
+                        paidAmt = null,
+                        0,
+                        etRecoveryAmount?.text.toString().toLong(),
+                        partyContactNumber = null,
+                        partyBillingAddress = null
+                    )
+                )
+            }
+            dialog.dismiss()
+        }
     }
 
     private fun showCustomDialog() {
@@ -337,6 +375,29 @@ class ItemsFragment : Fragment() {
 
         dialog.window?.attributes = layoutParams
         dialog.show()
+
+        val btnGivePayment = dialogView?.findViewById<Button>(R.id.btnGivePayment)
+        val etLendName = dialogView?.findViewById<EditText>(R.id.etLendName)
+        val etLendAmount = dialogView?.findViewById<EditText>(R.id.etLendAmount)
+        btnGivePayment?.setOnClickListener {
+                    MainScope().launch{
+                        purchaseSharedViewModel.addTransaction(
+                            TransactionEntity(
+                                billNo = null,
+                                Constants.LENDIN,
+                                etLendName?.text.toString(),
+                                "", "","",
+                                paidAmt = null,
+                                0,
+                                etLendAmount?.text.toString().toLong(),
+                                partyContactNumber = null,
+                                partyBillingAddress = null
+                            )
+                        )
+                    }
+            dialog.dismiss()
+        }
+
     }
 
 

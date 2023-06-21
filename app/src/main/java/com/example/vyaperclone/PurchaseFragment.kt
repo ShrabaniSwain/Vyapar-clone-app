@@ -46,6 +46,8 @@ class PurchaseFragment : Fragment() {
     ): View? {
 
         binding = FragmentPurchaseBinding.inflate(inflater, container, false)
+        return binding.root
+
         binding.addItemRecyclerCompose.setContent {
             LazyColumn() {
                 itemsIndexed(
@@ -55,8 +57,6 @@ class PurchaseFragment : Fragment() {
                 }
             }
         }
-        return binding.root
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -90,7 +90,7 @@ class PurchaseFragment : Fragment() {
                             binding.etPaid.text.toString().toLong(),
                             0,
                             binding.etTotal.text.toString().toLong(),
-                            partyContactNumber = null,
+                            binding.etContactNo.text.toString(),
                             partyBillingAddress = null
                         )
                     )
@@ -128,29 +128,27 @@ class PurchaseFragment : Fragment() {
             }
 
             override fun afterTextChanged(editable: Editable) {
-                //after the change calling the method and passing the search input
-                filter(editable.toString())
+                val input = editable.toString().trim().toLowerCase()
+                filter(input)
             }
         })
 
     }
 
     private fun filter(text: String) {
-        //new array list that will hold the filtered data
         val filteredTransactions = ArrayList<TransactionEntity>()
+        val uniquePartyNames = HashSet<String>()
 
-        //looping through existing elements
         for (transaction in transactions) {
-            //if the existing elements contains the search input
-            if (transaction.partyName?.toLowerCase()?.contains(text.toLowerCase())!!) {
-                //adding the element to filtered list
+            val partyName = transaction.partyName?.toLowerCase()
+            if (partyName?.contains(text.toLowerCase()) == true && uniquePartyNames.add(partyName)) {
                 filteredTransactions.add(transaction)
             }
         }
 
-        //calling a method of the adapter class and passing the filtered list
         adapter.filterList(filteredTransactions)
     }
+
 
     private fun isDataValid(): Boolean {
         var isValid = true
@@ -160,6 +158,10 @@ class PurchaseFragment : Fragment() {
         }
         if ( binding.etParty.text.toString().isEmpty()) {
             binding.etParty.error = "Required"
+            isValid = false
+        }
+        if ( binding.etContactNo.text.toString().isEmpty()) {
+            binding.etContactNo.error = "Required"
             isValid = false
         }
         if ( binding.etPaid.text.toString().isEmpty()) {
@@ -220,10 +222,11 @@ class PurchaseFragment : Fragment() {
         super.onResume()
         sharedViewModel.getReport().observe(this, Observer {
             transactions.clear()
-            transactions.addAll(it)
+            transactions.addAll(it.distinctBy { transaction -> transaction.partyName })
             adapter.notifyDataSetChanged()
         })
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
