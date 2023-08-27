@@ -1,17 +1,21 @@
 package com.example.vyaperclone
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.vyaperclone.databinding.FragmentAddNewPartyBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class AddNewPartyFragment : Fragment() {
@@ -63,6 +67,7 @@ class AddNewPartyFragment : Fragment() {
                     val partyType = if (binding.receiveRadioButton.isChecked) "Receive" else "Pay"
                     val contactNo = binding.contactNumberEditText.text.toString()
                     val inputString = binding.openingBalanceEditText.text.toString()
+                    val dateEditText = binding.dateEditText.text.toString()
                     val amount = inputString.toLongOrNull() ?: 0L
 
                     if (binding.receiveRadioButton.isChecked){
@@ -71,12 +76,15 @@ class AddNewPartyFragment : Fragment() {
                          paidAmount = inputString.toLongOrNull() ?: 0L
                     }
                     val partyEntity = TransactionEntity(billNo = null,type = partyType,partyName = partyName,billedItemNames = null,billedItemRate = null,
-                    billedItemQuantity = null,paidAmt = null, received = null,total = amount, partyContactNumber = contactNo,partyBillingAddress = null)
+                    billedItemQuantity = null,paidAmt = null, received = null,total = amount, partyContactNumber = contactNo,partyBillingAddress = null,partyBillingDate = dateEditText)
 
                     partiesViewModel.addParty(partyEntity)
                     activity?.onBackPressed()
                 }
             }
+        }
+        binding.dateEditText.setOnClickListener{
+            showDatePicker()
         }
 
     }
@@ -97,8 +105,34 @@ class AddNewPartyFragment : Fragment() {
             isValid = false
         }
 
+        if (binding.dateEditText.text.toString().isEmpty()) {
+            binding.dateEditText.error = "Required"
+            isValid = false
+        }
 
         return isValid
+    }
+
+    fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, dayOfMonth)
+                updateDateText(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
+
+    private fun updateDateText(calendar: Calendar) {
+        val dateFormat = SimpleDateFormat("dd LLL yy", Locale.getDefault())
+        val selectedDate = dateFormat.format(calendar.time)
+        binding.dateEditText.setText(selectedDate)
     }
 }
 

@@ -49,7 +49,7 @@
         android:padding="@dimen/dp_10" />
 
     <EditText
-        android:id="@+id/etLendDate"
+        android:id="@+id/etRecoveryDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,12 @@
         android:layout_marginTop="@dimen/dp_15"
         android:layout_marginHorizontal="@dimen/dp_15"
         android:background="@drawable/party_editext_box"
-        android:hint="13 Jun 2023"
+        android:drawableEnd="@drawable/ic_baseline_calendar_today_20"
+        android:hint="dd mm yy"
+        android:importantForAutofill="no"
+        android:textCursorDrawable="@null"
+        android:enabled="true"
+        android:focusable="false"
         android:textStyle="bold"
         android:inputType="textAutoComplete"
         android:padding="@dimen/dp_10" />
@@ -67,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_70"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etLendDate"
+        app:layout_constraintTop_toBottomOf="@id/etRecoveryDate"
         android:layout_marginTop="@dimen/dp_15"
         android:layout_marginHorizontal="@dimen/dp_15"
         android:background="@drawable/party_editext_box"

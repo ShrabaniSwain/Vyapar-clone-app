@@ -42,7 +42,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/openingBalanceInputLayout"
         app:boxStrokeColor="@color/black"
-        android:layout_width="@dimen/dp_200"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/contactNumberInputLayout"
         android:layout_margin="@dimen/dp_5">
@@ -50,7 +50,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/openingBalanceEditText"
             android:inputType="number"
-            android:layout_width="@dimen/dp_200"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:hint="@string/open_balance"
             android:layout_margin="@dimen/dp_5"/>
@@ -59,18 +59,26 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dateInputLayout"
-        android:layout_width="@dimen/dp_200"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/openingBalanceInputLayout"
         android:layout_below="@id/contactNumberInputLayout"
-        android:layout_margin="@dimen/dp_5">
+        android:layout_marginEnd="@dimen/dp_5"
+        android:layout_marginStart="@dimen/dp_20"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/dateEditText"
-            android:layout_width="@dimen/dp_200"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:hint="@string/as_of_date"
-            android:layout_margin="@dimen/dp_5"/>
+            android:paddingEnd="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:importantForAutofill="no"
+            android:textCursorDrawable="@null"
+            android:enabled="true"
+            android:focusable="false"
+            android:drawableEnd="@drawable/ic_baseline_calendar_today_20"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

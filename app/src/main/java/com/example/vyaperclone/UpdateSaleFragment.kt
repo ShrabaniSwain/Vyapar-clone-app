@@ -1,5 +1,6 @@
 package com.example.vyaperclone
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vyaperclone.databinding.FragmentUpdatePurchaseDataBinding
 import com.example.vyaperclone.databinding.FragmentUpdateSaleBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,6 +87,10 @@ class UpdateSaleFragment : Fragment() {
         binding.etCustomer.text=editablePartyName
         binding.etCustomer.isEnabled = false
 
+        val editableDate = Editable.Factory.getInstance().newEditable(Constants.DATE)
+        binding.tvDate2.text=editableDate
+        binding.tvDate2.isEnabled = false
+
         val editableContact = Editable.Factory.getInstance().newEditable(Constants.CONTACTNO)
         binding.etContactNo.text=editableContact
         binding.etContactNo.isEnabled = false
@@ -106,6 +114,7 @@ class UpdateSaleFragment : Fragment() {
 
         binding.btnEdit.setOnClickListener {
             binding.etCustomer.isEnabled = true
+            binding.tvDate2.isEnabled = true
             binding.etContactNo.isEnabled = true
             binding.etTotalAmount.isEnabled = true
             binding.etPaidAmount.isEnabled = true
@@ -117,6 +126,7 @@ class UpdateSaleFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val updatedPartyName = binding.etCustomer.text.toString()
+            val updatedDate = binding.tvDate2.text.toString()
             val updatedContact = binding.etContactNo.text.toString()
             val updatedTotalAmount = binding.etTotalAmount.text.toString().toInt()
             val updatedPaidAmt = binding.etPaidAmount.text.toString().toInt()
@@ -132,7 +142,7 @@ class UpdateSaleFragment : Fragment() {
                 paidAmt = updatedPaidAmt.toLong(),0,
                 total = updatedTotalAmount.toLong(),
                 partyContactNumber = updatedContact,
-                partyBillingAddress = null
+                partyBillingAddress = null, partyBillingDate = updatedDate
             )
 
             viewModel.updateTransaction(updatedTransaction)
@@ -144,6 +154,8 @@ class UpdateSaleFragment : Fragment() {
             viewModel.deleteTransactionByBillNo(billNoToDelete)
             findNavController().popBackStack()
         }
+
+        binding.tvDate2.setOnClickListener { showDatePicker() }
 
         val itemNames = Constants.itemsName.split(",").map { it.trim() }
         val quantities = Constants.quantity.split(",").map { it.trim() }
@@ -157,5 +169,27 @@ class UpdateSaleFragment : Fragment() {
         }
         binding.recyclerviewCustomer.layoutManager = LinearLayoutManager(context)
         binding.recyclerviewCustomer.adapter = adapter
+    }
+
+    fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, dayOfMonth)
+                updateDateText(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
+
+    private fun updateDateText(calendar: Calendar) {
+        val dateFormat = SimpleDateFormat("dd LLL yy", Locale.getDefault())
+        val selectedDate = dateFormat.format(calendar.time)
+        binding.tvDate2.setText(selectedDate)
     }
 }

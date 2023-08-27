@@ -1,10 +1,11 @@
 package com.example.vyaperclone
 
+import android.app.Dialog
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Button
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,16 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.example.vyaperclone.databinding.FragmentPartyDetailsBinding
-import com.example.vyaperclone.databinding.FragmentPurchaseBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class PartyDetailsFragment : Fragment() {
@@ -147,6 +145,15 @@ class PartyDetailsFragment : Fragment() {
                             }
                         }
                     }
+                }
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    BottomButtons()
+                    Spacer(modifier = Modifier.size(10.dp))
                 }
             }
         }
@@ -324,6 +331,74 @@ class PartyDetailsFragment : Fragment() {
                 }
             }
         }
+
+    }
+
+    @Composable
+    fun BottomButtons(
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+
+        ) {
+            if (Constants.PartyType == Constants.SALE || Constants.PartyType == "Receive"){
+            PaymentButton(Color(0xFF0174E7), "Receive", onClick = { showReceiveDialog() })
+            }else{
+                PaymentButton(Color(0xFF0174E7), "Pay", onClick = { showPayDialog() })
+            }
+        }
+    }
+
+    private fun showReceiveDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.receive_payment, activity?.findViewById(R.id.topsheetContainer))
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(dialogView)
+
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window?.attributes)
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+        layoutParams.gravity = Gravity.TOP
+
+        // Set desired margin from the top (in pixels)
+        val marginTopInPixels = resources.getDimensionPixelSize(R.dimen.dp_50)
+        layoutParams.y = marginTopInPixels
+
+        dialog.window?.attributes = layoutParams
+        dialog.show()
+
+        val btnSale = dialogView?.findViewById<Button>(R.id.btnBillPay)
+        val btnLendMoney = dialogView?.findViewById<Button>(R.id.btnLendMoney)
+
+        btnSale?.setOnClickListener {
+            btnLendMoney?.backgroundTintList = ColorStateList.valueOf(0xFF3076BD.toInt())
+        }
+
+//        btnLendMoney.setOnClickListener {
+//            btnBillPay.backgroundTintList = ColorStateList.valueOf(getColor(R.color.buttonBlue))
+//            btnLendMoney.backgroundTintList = ColorStateList.valueOf(getColor(R.color.buttonGrey))
+//        }
+
+    }
+
+    private fun showPayDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.pay_dialog, activity?.findViewById(R.id.topsheetContainer))
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(dialogView)
+
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window?.attributes)
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+        layoutParams.gravity = Gravity.TOP
+
+        // Set desired margin from the top (in pixels)
+        val marginTopInPixels = resources.getDimensionPixelSize(R.dimen.dp_50)
+        layoutParams.y = marginTopInPixels
+
+        dialog.window?.attributes = layoutParams
+        dialog.show()
 
     }
 

@@ -1,13 +1,11 @@
 package com.example.vyaperclone
 
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -35,12 +33,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class ItemsFragment : Fragment() {
     lateinit var binding: FragmentItemsBinding
-
-
+    lateinit var etLendDate : EditText
+    lateinit var etRecoveryDate : EditText
     private fun addItem(item: Int) {
         if (item == 2) {
             val action = ItemsFragmentDirections.actionNavItemsToAddProductFragment(null)
@@ -242,6 +242,7 @@ class ItemsFragment : Fragment() {
                                                     Constants.quantity = transaction.billedItemQuantity.toString()
                                                     Constants.rate = transaction.billedItemRate.toString()
                                                     Constants.CONTACTNO = transaction.partyContactNumber.toString()
+                                                    Constants.DATE = transaction.partyBillingDate.toString()
                                                 }
                                                 else{
                                                     val action = UpdateSaleFragmentDirections.actionUpdateSaleFragment()
@@ -255,6 +256,7 @@ class ItemsFragment : Fragment() {
                                                     Constants.quantity = transaction.billedItemQuantity.toString()
                                                     Constants.rate = transaction.billedItemRate.toString()
                                                     Constants.CONTACTNO = transaction.partyContactNumber.toString()
+                                                    Constants.DATE = transaction.partyBillingDate.toString()
                                                 }})
                                     } else if (transaction.partyName!!.contains(viewModel.searchQuery.value) && (transaction.type == Constants.PURCHASE || transaction.type == Constants.SALE)){
                                         TransactionCard(
@@ -338,6 +340,7 @@ class ItemsFragment : Fragment() {
         val btnRecoveryPayment = dialogView?.findViewById<Button>(R.id.btnRecoveryPayment)
         val etRecoveryName = dialogView?.findViewById<EditText>(R.id.etRecoveryName)
         val etRecoveryAmount = dialogView?.findViewById<EditText>(R.id.etRecoveryAmount)
+        etRecoveryDate = dialogView?.findViewById<EditText>(R.id.etRecoveryDate)!!
         btnRecoveryPayment?.setOnClickListener {
             MainScope().launch{
                 purchaseSharedViewModel.addTransaction(
@@ -350,12 +353,13 @@ class ItemsFragment : Fragment() {
                         0,
                         etRecoveryAmount?.text.toString().toLong(),
                         partyContactNumber = null,
-                        partyBillingAddress = null
+                        partyBillingAddress = null, etRecoveryDate.text.toString()
                     )
                 )
             }
             dialog.dismiss()
         }
+        etRecoveryDate.setOnClickListener { showRecoveryDatePicker() }
     }
 
     private fun showCustomDialog() {
@@ -379,6 +383,7 @@ class ItemsFragment : Fragment() {
         val btnGivePayment = dialogView?.findViewById<Button>(R.id.btnGivePayment)
         val etLendName = dialogView?.findViewById<EditText>(R.id.etLendName)
         val etLendAmount = dialogView?.findViewById<EditText>(R.id.etLendAmount)
+        etLendDate = dialogView?.findViewById<EditText>(R.id.etLendDate)!!
         btnGivePayment?.setOnClickListener {
                     MainScope().launch{
                         purchaseSharedViewModel.addTransaction(
@@ -391,15 +396,61 @@ class ItemsFragment : Fragment() {
                                 0,
                                 etLendAmount?.text.toString().toLong(),
                                 partyContactNumber = null,
-                                partyBillingAddress = null
+                                partyBillingAddress = null,
+                                etLendDate.text.toString()
                             )
                         )
                     }
             dialog.dismiss()
         }
 
+        etLendDate.setOnClickListener { showDatePicker() }
+
     }
 
+     fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, dayOfMonth)
+                updateDateText(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
+
+    private fun updateDateText(calendar: Calendar) {
+        val dateFormat = SimpleDateFormat("dd LLL yy", Locale.getDefault())
+        val selectedDate = dateFormat.format(calendar.time)
+        etLendDate.setText(selectedDate)
+    }
+
+    fun showRecoveryDatePicker() {
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, dayOfMonth)
+                updateRecoveryDateText(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
+
+    private fun updateRecoveryDateText(calendar: Calendar) {
+        val dateFormat = SimpleDateFormat("dd LLL yy", Locale.getDefault())
+        val selectedDate = dateFormat.format(calendar.time)
+        etRecoveryDate.setText(selectedDate)
+    }
 
     private fun navigateToSaleFragment() {
         val action = ItemsFragmentDirections.actionNavItemsToNavSale()

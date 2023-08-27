@@ -2,7 +2,7 @@
     <string name="app_name">Merchant</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="bill_no">Bill No.</string>
-    <string name="date_09_03_2021">Date 13/03/2021</string>
+    <string name="date_09_03_2021">Date: dd mm yy</string>
     <string name="add_items_optional">ADD ITEMS (OPTIONAL)</string>
     <string name="total_amt">Total Amt</string>
     <string name="paid_amt">Paid Amt</string>

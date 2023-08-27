@@ -1,11 +1,13 @@
 package com.example.vyaperclone
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +35,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 @AndroidEntryPoint
 class SaleFragment : Fragment() {
@@ -155,7 +161,7 @@ class SaleFragment : Fragment() {
                             binding.etPaidAmount.text.toString().toLong(),
                             binding.etTotalAmount.text.toString().toLong(),
                             binding.etContactNo.text.toString(),
-                            partyBillingAddress = null
+                            partyBillingAddress = null,binding.tvDate2.text.toString()
                         )
                     )
                     sharedViewModel.listOfSale.value.clear()
@@ -167,6 +173,7 @@ class SaleFragment : Fragment() {
 
         }
 
+        binding.tvDate2.setOnClickListener { showDatePicker() }
 
         //toast msg
 //        binding.btnSaveAndNew2.setOnClickListener {
@@ -255,6 +262,10 @@ class SaleFragment : Fragment() {
             binding.etTotalAmount.error = "Required"
             isValid = false
         }
+        if (binding.tvDate2.text.toString().isEmpty()) {
+            binding.tvDate2.error = "Required"
+            isValid = false
+        }
 //        if (sharedViewModel.listOfSale.value.isEmpty()) {
 //            Toast.makeText(activity, "Item is empty", Toast.LENGTH_SHORT).show()
 //            isValid = false
@@ -305,6 +316,28 @@ class SaleFragment : Fragment() {
 
         }
         return rate
+    }
+
+    fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, dayOfMonth)
+                updateDateText(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
+
+    private fun updateDateText(calendar: Calendar) {
+        val dateFormat = SimpleDateFormat("dd LLL yy", Locale.getDefault())
+        val selectedDate = dateFormat.format(calendar.time)
+        binding.tvDate2.setText(selectedDate)
     }
 }
 

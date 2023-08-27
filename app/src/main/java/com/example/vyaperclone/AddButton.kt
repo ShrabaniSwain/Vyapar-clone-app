@@ -118,6 +118,40 @@ fun SalePurchaseButton(
     }
 }
 
+@Composable
+fun PaymentButton(
+    backGroundColour: Color,
+    name: String,
+    onClick: () -> Unit
+) {
+
+    Button(
+        onClick = { onClick() },
+        modifier = Modifier
+            .width(140.dp)
+            .height(45.dp),
+        colors = ButtonDefaults.buttonColors(backgroundColor = backGroundColour),
+        shape = RoundedCornerShape(50)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = name, fontFamily = robotoFamily,
+                fontWeight = FontWeight.Medium,
+                fontSize = 15.sp,
+                color = Color.White
+            )
+
+        }
+    }
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun previewButton() {

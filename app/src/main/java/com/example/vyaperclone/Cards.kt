@@ -157,6 +157,16 @@ fun TransactionCard(
                     fontFamily = robotoFamily,
                     fontWeight = FontWeight.Medium
                 )
+                Text(
+                    modifier = Modifier
+                        .padding(top = 1.dp)
+                        .fillMaxWidth(0.9f),
+                    text = transactionEntity.partyBillingDate!!,
+                    fontSize = 12.sp,
+                    fontFamily = robotoFamily,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.Gray
+                )
                 //0xFF
                 //0xFFD1F2E7
                 Spacer(modifier = Modifier.size(5.dp))
@@ -214,7 +224,7 @@ fun TransactionCard(
                         }
                     }
                 }
-                Spacer(modifier = Modifier.size(15.dp))
+                Spacer(modifier = Modifier.size(1.dp))
 
 
                 Row(
@@ -239,7 +249,7 @@ fun TransactionCard(
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Gray
                             )
-                            Spacer(modifier = Modifier.size(5.dp))
+                            Spacer(modifier = Modifier.size(1.dp))
                             Text(
                                 text = "₹ " + transactionEntity.total.toString(),
                                 fontSize = 15.sp,
@@ -262,7 +272,7 @@ fun TransactionCard(
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Gray
                             )
-                            Spacer(modifier = Modifier.size(5.dp))
+                            Spacer(modifier = Modifier.size(1.dp))
                             Text(
                                 text = "₹ " + ((transactionEntity.total ?: 0) - getTheBigger(transactionEntity.received ?: 0, transactionEntity.paidAmt ?: 0)).toString(),
                                 fontSize = 15.sp,
@@ -274,7 +284,7 @@ fun TransactionCard(
                     Row {
                         Image(
                             modifier = Modifier
-                                .padding(top = 10.dp, end = 10.dp)
+                                .padding(top = 7.dp, end = 10.dp)
                                 .height(20.dp)
                                 .width(20.dp),
                             painter = painterResource(id = R.drawable.ic_print),
@@ -283,7 +293,7 @@ fun TransactionCard(
                         )
                         Image(
                             modifier = Modifier
-                                .padding(top = 10.dp, end = 10.dp)
+                                .padding(top = 5.dp, end = 10.dp)
                                 .height(20.dp)
                                 .width(20.dp),
                             painter = painterResource(id = R.drawable.ic_share),
@@ -292,7 +302,7 @@ fun TransactionCard(
                         )
                         Image(
                             modifier = Modifier
-                                .padding(top = 10.dp, end = 10.dp)
+                                .padding(top = 5.dp, end = 10.dp)
                                 .height(20.dp)
                                 .width(20.dp),
                             painter = painterResource(id = R.drawable.ic_more),
@@ -319,54 +329,62 @@ fun PartiesCard(partyEntity: TransactionEntity, onClick: (TransactionEntity) -> 
     Column(modifier = Modifier.fillMaxWidth()) {
         Card(
             modifier = Modifier
-                .height(65.dp)
+                .height(75.dp)
                 .fillMaxWidth()
                 .clickable { onClick(partyEntity) },
         ) {
-
-            Row(
-                modifier = Modifier
-                    .padding(start = 17.dp, end = 17.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-
-            ) {
-
-                Text(
-                    text = partyEntity.partyName!!,
-                    fontSize = 14.sp,
-                    fontFamily = robotoFamily,
-                    fontWeight = FontWeight.Medium
-                )
-                Column(
+            Column(modifier = Modifier.padding(17.dp)) {
+                Row(
                     modifier = Modifier
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.Center
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "₹ " + ((partyEntity.total ?: 0) - getTheBigger(partyEntity.received ?: 0, partyEntity.paidAmt ?: 0)).toString(),
-                        fontSize = 17.sp,
-                        fontFamily = robotoFamily,
-                        fontWeight = FontWeight.Medium,
-                        color = if (partyEntity.type == "Receive" || partyEntity.type == Constants.SALE) Color(0xFF26B180) else Color(0xFFE36B4E)
-                    )
-                    Spacer(modifier = Modifier.size(5.dp))
-                    Text(
-                        text = if (partyEntity.type == "Receive" || partyEntity.type == Constants.SALE) "You'll Get" else "You'll Give",
-                        fontSize = 13.sp,
-                        fontFamily = robotoFamily,
-                        fontWeight = FontWeight.Normal,
-                        color = if (partyEntity.type == "Receive" || partyEntity.type == Constants.SALE) Color(0xFF26B180) else Color(0xFFE36B4E)
-                    )
+                    Column {
+                        Text(
+                            text = partyEntity.partyName!!,
+                            fontSize = 16.sp,
+                            fontFamily = robotoFamily,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Spacer(modifier = Modifier.size(1.dp))
+                        Text(
+                            text = partyEntity.partyBillingDate!!, // Replace with your desired text
+                            fontSize = 13.sp,
+                            fontFamily = robotoFamily,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Gray // Customize the color as needed
+                        )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight(),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "₹ " + ((partyEntity.total ?: 0) - getTheBigger(partyEntity.received ?: 0, partyEntity.paidAmt ?: 0)).toString(),
+                            fontSize = 17.sp,
+                            fontFamily = robotoFamily,
+                            fontWeight = FontWeight.Medium,
+                            color = if (partyEntity.type == "Receive" || partyEntity.type == Constants.SALE) Color(0xFF26B180) else Color(0xFFE36B4E)
+                        )
+                        Spacer(modifier = Modifier.size(1.dp))
+                        Text(
+                            text = if (partyEntity.type == "Receive" || partyEntity.type == Constants.SALE) "You'll Get" else "You'll Give",
+                            fontSize = 13.sp,
+                            fontFamily = robotoFamily,
+                            fontWeight = FontWeight.Normal,
+                            color = if (partyEntity.type == "Receive" || partyEntity.type == Constants.SALE) Color(0xFF26B180) else Color(0xFFE36B4E)
+                        )
+                    }
                 }
-
             }
         }
         Divider(color = Color.LightGray, thickness = 1.dp)
     }
-
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
@@ -385,7 +403,7 @@ fun Preview() {
             500,
             1000,
             "8917281008",
-            "Odisha"
+            "Odisha","date"
         ), onClick = { /*TODO*/ })
         TransactionCard(transactionEntity =
         TransactionEntity(
@@ -399,7 +417,7 @@ fun Preview() {
             500,
             1000,
             "8917281008",
-            "Odisha"
+            "Odisha","date"
         ), onClick = { /*TODO*/ })
 
     }

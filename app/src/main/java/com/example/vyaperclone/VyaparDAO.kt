@@ -44,14 +44,15 @@ interface VyaparDAO {
     @Update
     suspend fun updateParty(partyEntity: TransactionEntity)
 
-    @Query("UPDATE transactionsTable SET partyName = :partyName, total = :total, paidAmt = :paidAmt, received = :received, partyContactNumber = :partyContactNumber WHERE billNo = :billNo")
+    @Query("UPDATE transactionsTable SET partyName = :partyName, total = :total, paidAmt = :paidAmt, received = :received, partyContactNumber = :partyContactNumber, partyBillingDate = :partyBillingDate WHERE billNo = :billNo")
     suspend fun updateTransaction(
         billNo: Int?,
         partyName: String?,
         total: Long?,
         paidAmt: Long?,
         received: Long?,
-        partyContactNumber: String
+        partyContactNumber: String,
+        partyBillingDate: String
     )
     @Query("DELETE FROM transactionsTable WHERE billNo = :billNo")
     suspend fun deleteTransactionByBillNo(billNo: Int)

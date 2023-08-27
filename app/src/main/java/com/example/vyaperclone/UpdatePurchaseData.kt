@@ -1,11 +1,13 @@
 package com.example.vyaperclone
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -13,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vyaperclone.databinding.FragmentUpdatePurchaseDataBinding
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,6 +76,10 @@ class UpdatePurchaseData : Fragment() {
         binding.etParty.text = editablePartyName
         binding.etParty.isEnabled = false
 
+        val editableDate = Editable.Factory.getInstance().newEditable(Constants.DATE)
+        binding.tvDate.text = editableDate
+        binding.tvDate.isEnabled = false
+
         val editableContactNo = Editable.Factory.getInstance().newEditable(Constants.CONTACTNO)
         binding.etContactNo.text = editableContactNo
         binding.etContactNo.isEnabled = false
@@ -98,6 +106,7 @@ class UpdatePurchaseData : Fragment() {
 
         binding.btnEdit.setOnClickListener {
             binding.etParty.isEnabled = true
+            binding.tvDate.isEnabled = true
             binding.etContactNo.isEnabled = true
             binding.etTotal.isEnabled = true
             binding.etPaid.isEnabled = true
@@ -109,6 +118,7 @@ class UpdatePurchaseData : Fragment() {
 
         binding.btnSave.setOnClickListener {
             val updatedPartyName = binding.etParty.text.toString()
+            val updatedDate = binding.tvDate.text.toString()
             val updatedContactNo = binding.etContactNo.text.toString()
             val updatedTotalAmount = binding.etTotal.text.toString().toInt()
             val updatedPaidAmt = binding.etPaid.text.toString().toInt()
@@ -124,12 +134,14 @@ class UpdatePurchaseData : Fragment() {
                 paidAmt = updatedPaidAmt.toLong(),0,
                 total = updatedTotalAmount.toLong(),
                 partyContactNumber = updatedContactNo,
-                partyBillingAddress = null
+                partyBillingAddress = null,partyBillingDate = updatedDate
             )
 
             viewModel.updateTransaction(updatedTransaction)
             findNavController().popBackStack()
         }
+
+        binding.tvDate.setOnClickListener { showDatePicker() }
 
         binding.btnDelete.setOnClickListener {
             val billNoToDelete = binding.etBillNo.text.toString().toInt()
@@ -150,6 +162,28 @@ class UpdatePurchaseData : Fragment() {
         binding.recyclerviewName.layoutManager = LinearLayoutManager(context)
         binding.recyclerviewName.adapter = adapter
 
+    }
+
+    fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, dayOfMonth)
+                updateDateText(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
+
+    private fun updateDateText(calendar: Calendar) {
+        val dateFormat = SimpleDateFormat("dd LLL yy", Locale.getDefault())
+        val selectedDate = dateFormat.format(calendar.time)
+        binding.tvDate.setText(selectedDate)
     }
 
 }

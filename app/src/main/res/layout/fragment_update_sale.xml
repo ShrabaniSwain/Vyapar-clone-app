@@ -34,19 +34,20 @@
     <!--        android:drawablePadding="@dimen/dp_10"-->
     <!--        android:datePickerMode="calendar" />-->
 
-    <TextView
+    <EditText
         android:id="@+id/tvDate2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_15"
-        android:layout_marginEnd="@dimen/dp_15"
-        android:layout_marginBottom="@dimen/dp_15"
         android:drawableEnd="@drawable/ic_baseline_calendar_today_20"
         android:drawablePadding="@dimen/dp_10"
-        android:text="@string/date_09_03_2021" />
+        android:textSize="@dimen/sp_15"
+        android:importantForAutofill="no"
+        android:textCursorDrawable="@null"
+        android:enabled="true"
+        android:focusable="false"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:hint="@string/date_09_03_2021" />
 
     <View
         android:id="@+id/vLine1"

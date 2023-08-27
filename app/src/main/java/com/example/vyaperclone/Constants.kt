@@ -29,5 +29,6 @@ class Constants {
         var ReceivedAmount = ""
         var PaidAmount = ""
         var CONTACTNO = ""
+        var DATE = ""
     }
 }

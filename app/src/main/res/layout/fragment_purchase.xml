@@ -24,15 +24,20 @@
         android:inputType="number"
         android:textSize="@dimen/sp_16" />
 
-    <TextView
+    <EditText
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/dp_15"
         android:drawableEnd="@drawable/ic_baseline_calendar_today_20"
         android:drawablePadding="@dimen/dp_10"
-        android:text="@string/date_09_03_2021" />
+        android:textSize="@dimen/sp_15"
+        android:importantForAutofill="no"
+        android:textCursorDrawable="@null"
+        android:enabled="true"
+        android:focusable="false"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:hint="@string/date_09_03_2021" />
 
     <View
         android:id="@+id/vLine1"

@@ -1,5 +1,6 @@
 package com.example.vyaperclone
 
+import android.app.DatePickerDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.ui.platform.ComposeView
@@ -23,6 +25,10 @@ import com.example.vyaperclone.databinding.FragmentPurchaseBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 import kotlin.math.log
 
 @AndroidEntryPoint
@@ -91,7 +97,7 @@ class PurchaseFragment : Fragment() {
                             0,
                             binding.etTotal.text.toString().toLong(),
                             binding.etContactNo.text.toString(),
-                            partyBillingAddress = null
+                            partyBillingAddress = null,binding.tvDate.text.toString()
                         )
                     )
                     sharedViewModel.listOfPurchase.value.clear()
@@ -102,6 +108,7 @@ class PurchaseFragment : Fragment() {
 
 
         }
+        binding.tvDate.setOnClickListener { showDatePicker() }
 
         binding.btnCameraPurchaseFrag.setOnClickListener {
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -172,6 +179,10 @@ class PurchaseFragment : Fragment() {
             binding.etTotal.error = "Required"
             isValid = false
         }
+        if ( binding.tvDate.text.toString().isEmpty()) {
+            binding.tvDate.error = "Required"
+            isValid = false
+        }
         return isValid
     }
 
@@ -234,4 +245,25 @@ class PurchaseFragment : Fragment() {
         binding.recyclerviewName.adapter = adapter
     }
 
+    fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, dayOfMonth)
+                updateDateText(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
+
+    private fun updateDateText(calendar: Calendar) {
+        val dateFormat = SimpleDateFormat("dd LLL yy", Locale.getDefault())
+        val selectedDate = dateFormat.format(calendar.time)
+        binding.tvDate.setText(selectedDate)
+    }
 }
