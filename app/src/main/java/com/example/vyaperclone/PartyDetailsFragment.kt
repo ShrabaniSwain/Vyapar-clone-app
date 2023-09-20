@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
+import android.widget.EditText
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,6 +23,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.activityViewModels
 import com.example.vyaperclone.databinding.FragmentPartyDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -369,16 +372,19 @@ class PartyDetailsFragment : Fragment() {
         dialog.show()
 
         val btnSale = dialogView?.findViewById<Button>(R.id.btnBillPay)
-        val btnLendMoney = dialogView?.findViewById<Button>(R.id.btnLendMoney)
+        val btnLendMoney = dialogView?.findViewById<Button>(R.id.btnLendMoneyPay)
+        val etPayInvoiceNo = dialogView?.findViewById<EditText>(R.id.etPayInvoiceNo)
 
-        btnSale?.setOnClickListener {
-            btnLendMoney?.backgroundTintList = ColorStateList.valueOf(0xFF3076BD.toInt())
-        }
-
-//        btnLendMoney.setOnClickListener {
-//            btnBillPay.backgroundTintList = ColorStateList.valueOf(getColor(R.color.buttonBlue))
-//            btnLendMoney.backgroundTintList = ColorStateList.valueOf(getColor(R.color.buttonGrey))
+//        btnSale?.setOnClickListener {
+//            btnLendMoney?.backgroundTintList = ColorStateList.valueOf(0xFF3076BD.toInt())
 //        }
+
+        btnLendMoney?.setOnClickListener {
+            val colorBlue = getColor(requireContext(), R.color.app_bar_color)
+            btnLendMoney.backgroundTintList = ColorStateList.valueOf(colorBlue)
+            btnSale?.backgroundTintList = ColorStateList.valueOf(0xFF3076BD.toInt())
+            etPayInvoiceNo?.visibility = View.GONE
+        }
 
     }
 

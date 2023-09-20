@@ -15,5 +15,13 @@ class OTPActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOtpactivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.btnOtpSubmit.setOnClickListener {
+            val intent = Intent(this@OTPActivity, HomeActivity::class.java)
+            startActivity(intent)
+        }
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
     }
 }
